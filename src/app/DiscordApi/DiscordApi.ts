@@ -1,6 +1,5 @@
+import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
 import { DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
-
-export const auth = ""
 
 export default class DiscordAPI {
     private constructor() {};
@@ -19,7 +18,7 @@ export default class DiscordAPI {
 
 
     // Sort DM Channels
-    private static sortDmChannels(dmChannels: DmChannel[]): DmChannel[] {
+    static sortDmChannels(dmChannels: DmChannel[]): DmChannel[] {
         return dmChannels.sort((a, b) => {
         // Convert the last_message_id to numbers for comparison
         const lastMessageIdA = Number(a.last_message_id);
@@ -44,8 +43,8 @@ export default class DiscordAPI {
           const options = {
             method: 'GET',
             headers: {
-              authorization: auth,
-              'Content-Type': 'application/json',
+              authorization: FlercordLocalStorage.token || "",
+              'Content-Type': 'application/json'
             },
           };
           const response = await fetch(
@@ -68,7 +67,7 @@ export default class DiscordAPI {
           const options = {
             method: 'GET',
             headers: {
-              authorization: auth,
+              authorization: FlercordLocalStorage.token || "",
               'Content-Type': 'application/json',
             },
           };
@@ -99,7 +98,7 @@ export default class DiscordAPI {
         const options = {
           method: 'POST',
           headers: {
-            authorization: auth,
+            authorization: FlercordLocalStorage.token || "",
             'content-type': 'application/json',
           },
           body: JSON.stringify(body),
@@ -114,7 +113,7 @@ export default class DiscordAPI {
         const options = {
           method: 'DELETE',
           headers: {
-            authorization: auth,
+            authorization: FlercordLocalStorage.token || "",
             'content-type': 'application/json',
           }
         };
@@ -129,7 +128,7 @@ export default class DiscordAPI {
           const options = {
             method: "GET",
             headers: {
-              authorization: auth,
+              authorization: FlercordLocalStorage.token || "",
               "Content-Type": "application/json"
             }
           }
@@ -148,7 +147,7 @@ export default class DiscordAPI {
           const options = {
             method: "GET",
             headers: {
-              authorization: auth,
+              authorization: FlercordLocalStorage.token || "",
               "Content-Type": "application/json"
             }
           }
@@ -169,7 +168,7 @@ export default class DiscordAPI {
           const options = {
             method: "GET",
             headers: {
-              authorization: auth,
+              authorization: FlercordLocalStorage.token || "",
               "Content-Type": "application/json"
             }
           }
@@ -188,7 +187,7 @@ export default class DiscordAPI {
           const options = {
             method: "GET",
             headers: {
-              authorization: auth,
+              authorization: FlercordLocalStorage.token || "",
               "Content-Type": "application/json"
             }
           }
@@ -210,7 +209,7 @@ export default class DiscordAPI {
         const options = {
           method: 'POST',
           headers: {
-            authorization: auth,
+            authorization: FlercordLocalStorage.token || "",
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({files: files}),

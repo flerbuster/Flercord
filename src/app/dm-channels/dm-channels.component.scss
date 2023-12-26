@@ -1,0 +1,68 @@
+@import '../../styles';
+
+
+.dm-channels-wrapper {
+    width: 100%;
+    overflow: hidden;
+    
+    display: flex;
+    flex-direction: column;
+
+    //padding: 0.5rem 0.0rem 0.0rem 0.5rem;
+
+    .dmChannel {
+        margin: 0.3rem 0rem 0.1rem 0rem;
+        padding: 0;
+        width: 100%;
+        height: 4rem;
+        overflow: hidden;
+
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+
+        $bg-color-dmchannel: $bg-color-dark-2;
+        color: lighten-or-darken-color($text-color-light, 10);
+        background-color:  $bg-color-dmchannel;
+
+        &-selected {
+            color: white;
+            background-color: lighten-or-darken-color($bg-color-dmchannel, 10);
+        }
+
+        &:hover {
+            color: white;
+            cursor: pointer;
+            background-color: lighten-or-darken-color($bg-color-dmchannel, 7);
+        }
+
+        img {
+            $dmchannelimg-size: 2.7rem;
+            width: $dmchannelimg-size;
+            height: $dmchannelimg-size;
+            border-radius: 50%;
+            margin: auto 0.6rem auto 0.5rem;
+        }
+
+        .dmchannel-texts {
+            margin:  auto 0;
+            display: flex;
+
+            
+            
+            flex-direction: column;
+
+            p {
+                margin: 0;
+            }
+
+            .dmchannel-name {
+                font-size: 1.2rem;
+                font-weight: 500;
+            }
+
+            dmchannel-description {
+                font-size: 0.5rem;
+            }
+        }
+    }
+}

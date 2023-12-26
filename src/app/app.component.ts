@@ -2,9 +2,6 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { DiscordGateway } from './DiscordApi/DiscordGateway';
 import { Guild, ReadyEvent } from './DiscordApi/Interface';
 
-const discordGateway = DiscordGateway.getInstance();
-discordGateway.connectToWebSocket()
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

@@ -1,1 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
+$bg-color-dark: rgb(24, 24, 24);
+$bg-color-dark-2: rgb(28, 28, 28);
+$bg-color-dark-3: rgb(32, 32, 32);
+$bg-color-light: rgb(230, 230, 230);
+$text-color-light: #f3f3f3;
+$text-color-dark: rgb(20, 20, 20);
+$font-one: sans-serif;
+$color-1: #6610f2;
+
+@function lighten-or-darken-color($color, $factor) {
+    $hue: hue($color);
+    $saturation: saturation($color);
+    $lightness: lightness($color);
+  
+    @if ($lightness > 50) {
+        $lightness: $lightness - ($factor / 100 * $lightness);
+        $lightness: max(0, min($lightness, 100));
+      
+        $new: hsl($hue, $saturation, $lightness);
+        @return rgb(red($new), green($new), blue($new));
+    } @else {
+        $lightness: $lightness + ($factor / 100 * (100 - $lightness));
+        $lightness: max(0, min($lightness, 100));
+      
+        $new: hsl($hue, $saturation, $lightness);
+        @return rgb(red($new), green($new), blue($new));
+    }
+}
+
+
+@function get-text-color($bg-color) {
+    @if (lightness($bg-color) > 50) {
+        @return $text-color-dark;
+    } @else {
+        @return $text-color-light;
+    }
+}
+
+body {
+    margin: 0;
+}

@@ -275,20 +275,6 @@ export interface Author {
     banner_color: string | undefined;
   }
   
-  export interface Attachment {
-    id: string;
-    filename: string;
-    size: number;
-    url: string | undefined;
-    proxy_url: string | undefined;
-    width: number;
-    height: number;
-    content_type: string | undefined;
-    content_scan_version: number;
-    placeholder: string | undefined;
-    placeholder_version: number;
-  }
-  
   export interface MessageReference {
     message_id: string;
     channel_id: string;
@@ -581,7 +567,7 @@ export interface ReadyEvent {
     notes: { id: string, note: string }[],
     notification_settings: { flags: number },
     presences: Presence[],
-    private_channels: DmChannel,
+    private_channels: DmChannel[],
     read_state: ReadState[],
     relationships: Relationship[],
     resume_gateway_url: string,

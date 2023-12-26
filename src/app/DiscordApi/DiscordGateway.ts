@@ -1,4 +1,4 @@
-import { auth } from "./DiscordApi";
+import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
 import { ReadyEvent } from "./Interface";
 
 enum ClientActionOpCode {
@@ -43,8 +43,10 @@ export class DiscordGateway {
     connectToWebSocket(gateway_url: string = 'wss://gateway.discord.gg', init_payload: any = undefined) {
       this.ws = new WebSocket(gateway_url);
       if (init_payload != undefined) {
-        console.log("sending init_payload", init_payload);
-        this.ws.send(JSON.stringify(init_payload))
+        this.ws.onopen = () => {
+          console.log("sending init_payload", init_payload);
+          this.ws!.send(JSON.stringify(init_payload))
+        }
       }
       this.ws.onopen = (event) => {
         this.consolelog('Connected to Discord Gateway', event);
@@ -108,7 +110,7 @@ export class DiscordGateway {
       let resumePayload = {
         "op": ClientActionOpCode.Resume,
         "d": {
-          "token": auth,
+          "token": FlercordLocalStorage.token,
           "session_id": session?.session_id,
           "seq": undefined
         }
@@ -122,7 +124,7 @@ export class DiscordGateway {
           const identifyPayload = {
             op: ClientActionOpCode.Identify,
             d: {
-              token: auth,
+              token: FlercordLocalStorage.token,
               intents: 3276799, 
               properties: {
                 $os: 'fleros',
