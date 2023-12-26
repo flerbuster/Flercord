@@ -1,0 +1,7 @@
+<ul>
+    @for (guild of guilds; track guild.name) {
+        <li>{{ guild.name }}</li>
+    } @empty {
+        Keine guilds
+    }
+</ul>

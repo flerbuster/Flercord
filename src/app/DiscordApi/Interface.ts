@@ -388,9 +388,211 @@ export interface Author {
     id: string;
     is_clip: boolean;
   }
-  
+
   export interface DiscordAttachment {
     id: number;
     upload_filename: string;
     upload_url: string;
   }
+
+  export interface Activity {
+    name: string;
+    type?: number | undefined;
+    state?: string | undefined;
+    details?: string | undefined;
+    startTimestamp?: number | undefined;
+    endTimestamp?: number | undefined;
+    largeImageKey?: string | undefined;
+    largeImageText?: string | undefined;
+    largeImageUrl?: string | undefined;
+    cover_image?: string | undefined;
+    smallImageKey?: string | undefined;
+    smallImageText?: string | undefined;
+    partyId?: string | undefined;
+    partySize?: number | undefined;
+    partyMax?: number | undefined;
+    matchSecret?: string | undefined;
+    spectateSecret?: string | undefined;
+    joinSecret?: string | undefined;
+    instance?: 0 | 1 | undefined;
+  }
+  
+  export enum Status {
+    Online = 'online',
+    Idle = 'idle',
+    DoNotDisturb = 'dnd',
+    Offline = 'offline',
+    Invisible = 'invisible',
+  }
+
+  export interface Presence {
+    activities: Activity[],
+    client_status: { desktop?: Status, web?: Status, mobile?: Status },
+    last_modified: number,
+    user: PublicUser
+}
+
+export interface ReadState {
+    flags: number,
+    id: string,
+    last_message_id: string,
+    last_pin_timestamp: string,
+    mention_count: number
+}
+
+export interface Relationship {
+    id: string,
+    nickname?: string,
+    since: Date,
+    type: number,
+    user: PublicUser
+}
+
+export interface Session {
+    activities: Activity[],
+    client_info: {
+        version: number,
+        os: string,
+        client: string
+    },
+    session_id: string,
+    status: Status
+}
+
+export interface SelfUser {
+    accent_color: number | undefined;
+    avatar: string | undefined;
+    avatar_decoration_data: string | undefined;
+    banner: string | undefined;
+    banner_color: string | undefined;
+    bio: string | undefined;
+    desktop: boolean,
+    discriminator: string | undefined;
+    email: string | undefined;
+    flags: number,
+    global_name: string | undefined;
+    id: string,
+    mfa_enabled: boolean,
+    mobile: boolean,
+    nsfw_allowed: boolean,
+    phone: string | undefined,
+    premium: boolean,
+    premium_type: number,
+    pronouns: string,
+    public_flags: number,
+    purchased_flags: number,
+    username: string,
+    verified: boolean,
+}
+
+export interface UserGuildSetting {
+    channel_overrides: ChannelOverride[],
+    flags: number,
+    guild_id?: string,
+    hide_muted_channels: boolean,
+    message_notifications: number,
+    mobile_push: boolean,
+    mute_config?: any,
+    mute_scheduled_events: boolean,
+    muted: boolean,
+    notify_highlights: number,
+    supress_everyone: false,
+    supress_roles: false,
+    version: number
+}
+ 
+export interface ChannelOverride {
+    channel_id: string,
+    collapsed: boolean,
+    message_notifcations: number,
+    mute_config?: any,
+    muted: boolean
+}
+
+export interface GuildFolder {
+    color?: string,
+    guild_ids: string[],
+    id?: string,
+    name?: string
+}
+
+export interface UserSettings {
+    activity_joining_restricted_guild_ids: any[],
+    activity_restricted_guild_ids: any[],
+    afk_timeout: number,
+    allow_accessibility_detection: boolean,
+    animate_emoji: boolean,
+    animate_stickers: number,
+    broadcast_allow_friends: boolean,
+    broadcast_allowed_guild_ids: string[],
+    broadcast_allowed_user_ids: string[],
+    contact_sync_enabled: boolean,
+    convert_emoticons: boolean,
+    custom_status?: any,
+    default_guilds_restricted: boolean,
+    detect_plattform_accounts: boolean,
+    developer_moce: boolean,
+    disable_games_tab: boolean,
+    enable_tts_command: boolean,
+    explicit_content_filter: 1,
+    friend_discovery_flags: number,
+    friend_source_flags: { all: boolean }[],
+    gif_auto_play: boolean,
+    guild_folders: GuildFolder,
+    inline_attachment_media: boolean,
+    inline_embed_media: boolean,
+    locale: string,
+    message_display_compact: boolean,
+    native_phone_integration_enabled: boolean,
+    passwordless: boolean,
+    render_embeds: boolean,
+    render_reactions: boolean,
+    restricted_guilds: any[],
+    show_current_game: boolean,
+    status: Status,
+    stream_notifications_enabled: boolean,
+    theme: string,
+    timezone_offset: number,
+    view_nsfw_commands: boolean,
+    view_nsfw_guilds: boolean
+}
+
+export interface ReadyEvent {
+    analytics_token: string,
+    api_code_version: number,
+    auth: {
+        authenticator_types: any[]
+    },
+    auth_session_id_hash: string,
+    connected_accounts: any[],
+    consents: {
+        personalization: {
+            consented: boolean
+        };
+    },
+    country_code: string,
+    current_locations: string[],
+    experiments: number[][],
+    friend_usggestion_count: number,
+    geo_ordered_rtc_regions: string[],
+    guild_experiments: any[][],
+    guild_joiun_requests: any[],
+    guilds: Guild[],
+    notes: { id: string, note: string }[],
+    notification_settings: { flags: number },
+    presences: Presence[],
+    private_channels: DmChannel,
+    read_state: ReadState[],
+    relationships: Relationship[],
+    resume_gateway_url: string,
+    session_id: string,
+    session_type: string,
+    sessions: Session[],
+    tutorial?: any,
+    user: SelfUser,
+    user_guild_settings: UserGuildSetting[],
+    user_settings: UserSettings,
+    user_settings_proto: string,
+    v: number,
+    _trace: string[]
+}

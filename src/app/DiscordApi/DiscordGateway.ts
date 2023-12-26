@@ -1,4 +1,5 @@
 import { auth } from "./DiscordApi";
+import { ReadyEvent } from "./Interface";
 
 enum ClientActionOpCode {
     Dispatch = 0,
@@ -17,7 +18,7 @@ enum ClientActionOpCode {
 export class DiscordGateway {
     private static instance: DiscordGateway | null = null;
     private log = true;
-    data: any;
+    data?: ReadyEvent;
   
     ws: WebSocket | undefined;
     private heartbeatInterval: number = 999999;
@@ -62,7 +63,7 @@ export class DiscordGateway {
           console.log('ready event received!');
   
           console.log(eventData.d)
-          this.data = eventData.d
+          this.data = eventData.d as ReadyEvent
         } else if (eventData.op === ClientActionOpCode.InvalidSession) {
           this.ws?.close();
           this.connectToWebSocket();
@@ -74,15 +75,16 @@ export class DiscordGateway {
             this.sendIdentifyPayload();
             this.wait = false;
           }
-        } else {
-          for (let [
-            event_type,
-            event_listeners,
-          ] of this.eventListeners.entries()) {
-            if (event_type === eventData.t) {
-              for (let event_listener of event_listeners) {
-                event_listener(eventData.d);
-              }
+        }
+
+        
+        for (let [
+          event_type,
+          event_listeners,
+        ] of this.eventListeners.entries()) {
+          if (event_type === eventData.t) {
+            for (let event_listener of event_listeners) {
+              event_listener(eventData.d);
             }
           }
         }
@@ -102,20 +104,19 @@ export class DiscordGateway {
     }
   
     private resumeGateway() {
-      let session = this.data.sessions[this.data.sessions.length - 1]
+      let session = this.data?.sessions[this.data.sessions.length - 1]
       let resumePayload = {
         "op": ClientActionOpCode.Resume,
         "d": {
           "token": auth,
-          "session_id": session.session_id,
+          "session_id": session?.session_id,
           "seq": undefined
         }
       }
-      this.connectToWebSocket(this.data.resume_gateway_url, resumePayload);
+      this.connectToWebSocket(this.data?.resume_gateway_url, resumePayload);
     }
   
     private sendIdentifyPayload() {
-      // Check if the WebSocket is open before sending data
       if (this.ws)
         if (this.ws.readyState === WebSocket.OPEN) {
           const identifyPayload = {
@@ -132,7 +133,6 @@ export class DiscordGateway {
             },
           };
   
-          // Convert the payload to a JSON string and send it
           console.log("sending identify payload", identifyPayload);
           this.ws.send(JSON.stringify(identifyPayload));
         }

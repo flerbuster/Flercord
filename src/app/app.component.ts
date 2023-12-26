@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { DiscordGateway } from './DiscordApi/DiscordGateway';
+import { Guild, ReadyEvent } from './DiscordApi/Interface';
 
 const discordGateway = DiscordGateway.getInstance();
 discordGateway.connectToWebSocket()
@@ -11,4 +12,17 @@ discordGateway.connectToWebSocket()
 })
 export class AppComponent {
   title = 'Flercord';
+  constructor(private chRef: ChangeDetectorRef){}
+
+
+  guilds: Guild[] = [];
+
+  ngOnInit() {
+    DiscordGateway.getInstance().onEvent("READY", (event => {
+      this.guilds = (event as ReadyEvent).guilds || []
+
+      this.chRef.detectChanges()
+    }))
+  }
+
 }
