@@ -85,7 +85,7 @@ export default class DiscordAPI {
         }
     }
 
-    static async sendMessage(channel_id: string, content?: string, tts?: boolean, attachments?: DiscordMessageAttachment[]) {
+    static async sendMessage(channel_id: string, content?: string, tts?: boolean, attachments?: DiscordMessageAttachment[]): Promise<Message> {
         let body = {
           mobile_network_type: 'unknown',
           content: content,
@@ -106,7 +106,7 @@ export default class DiscordAPI {
     
         console.log(body);
     
-        return await fetch(`${this.base_url}/channels/${channel_id}/messages`, options);
+        return await(await fetch(`${this.base_url}/channels/${channel_id}/messages`, options)).json() as Message;
     }
 
     static async deleteMessage(channel_id: string, message_id: string): Promise<void> {

@@ -1,0 +1,49 @@
+@import '../../styles.scss';
+
+.sendmessagebutton {
+    /* Just a little styling to make it pretty */
+    background: transparent;
+    color: white;
+    position: absolute;
+    border: none;
+  
+    bottom: 0.75em; /* Align the button to the bottom */
+    right: 1.25em; /* Align the button to the right */
+  
+    height: 2.25em;
+    width: 2.51em; 
+  
+    margin-top: 0.51em;
+    background-size: cover; /* This will make the image fit the button */
+  }
+  
+  .bottom-left-div {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+    background-color: rgb(32, 27, 29);
+    border-radius: 1em;
+    padding: 1em;
+    margin: 1em;
+    margin-bottom: 2em;
+    margin-top: 0.5em;
+    max-height: 25em;
+    position: relative;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    bottom: 0;
+
+    #message {
+        background-color: transparent;
+        display: block;
+        width: 90%;
+        border: none;
+        outline: none;
+        min-height: 1em;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        resize: none;
+        color: white;
+        font-family: $font-one;
+        font-size: 1rem;
+    }
+  }

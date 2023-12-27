@@ -13,7 +13,7 @@ import { FlercordComponent } from './flercord/flercord.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule 
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

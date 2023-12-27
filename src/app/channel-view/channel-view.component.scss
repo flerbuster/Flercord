@@ -6,8 +6,9 @@
 }
 
 .message-container {
-    max-height: 100vh;
+    max-height: 100%;
     overflow-y: auto;
+    position: relative;
 
     @include flercord-scrollbar;
 }
@@ -44,3 +45,10 @@
         margin: 0;
     }
 }
+
+.ctnr {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr 5rem;
+}
+

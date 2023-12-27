@@ -1,0 +1,18 @@
+<div>
+    <div class="bottom-left-div">
+        <div
+            #messageDiv
+            contenteditable="true"
+            (input)="onInput($event)"
+            name="message"
+            id="message"
+            placeholder="Enter your message"
+        ></div>
+    
+        <button class="sendmessagebutton" (click)="send()">
+            <img src="assets/sendmessage.svg"/>
+        </button>
+
+    </div>
+      
+  </div>

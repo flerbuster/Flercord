@@ -34,10 +34,8 @@ export class FlercordComponent {
   open_channel: string | undefined = undefined
 
   on_click_channel = (channel: DisplayableDmChannel) => {
-    console.log(channel)
     this.open_channel = channel.id
     this.recipients = channel.recipients
-    console.log(this.open_channel)
   }
 
 
@@ -50,7 +48,7 @@ export class FlercordComponent {
     DiscordGateway.getInstance().onEvent("READY", (event => {
       this.guilds = (event as ReadyEvent).guilds || []
       this.initialized = true
-      this.chRef.detectChanges()
+      //this.chRef.detectChanges()
 
     }))
   }

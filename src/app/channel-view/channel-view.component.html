@@ -1,10 +1,17 @@
 @if (recipients.length != 0) {
     <div class="grid-80-20">
-        <div class="message-container">
-            @for(message of messages; track message.id) {
-                <standard-message [message]="message" [messages]="messages"/>
-            }        
+        <div class="ctnr">
+            <div class="message-container" #messagesDiv>
+                @for(message of messages; track message.id) {
+                    <standard-message [message]="message" [messages]="messages"/>
+                }
+            </div>
+            @if (channel_id) {
+                <message-button [sendMessage]="sendMessage"/>
+            }
         </div>
+
+        
         <div class="recipients">
             @for (recipient of recipients; track recipient.id) {
                 <div class="recipient">
@@ -15,9 +22,14 @@
         </div>
     </div>
 } @else {
-    <div class="message-container">
-        @for(message of messages; track message.id) {
-            <standard-message [message]="message" [messages]="messages"/>
-        }        
+    <div class="ctnr">
+        <div class="message-container" #messagesDiv>
+            @for(message of messages; track message.id) {
+                <standard-message [message]="message" [messages]="messages"/>
+            }
+        </div>
+        @if (channel_id) {
+            <message-button [sendMessage]="sendMessage"/>
+        }
     </div>
 }

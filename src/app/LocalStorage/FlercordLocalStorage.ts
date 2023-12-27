@@ -8,7 +8,6 @@ export default class FlercordLocalStorage {
     }
 
     static set token(value: string) {
-        console.log("set called!");
         localStorage.setItem(FlercordLocalStorage.token_key, value);
     }
 }
