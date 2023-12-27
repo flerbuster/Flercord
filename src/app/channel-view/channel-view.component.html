@@ -1,3 +1,23 @@
-@for(message of messages; track message.id) {
-    <standard-message [message]="message" [messages]="messages"/>
+@if (recipients.length != 0) {
+    <div class="grid-80-20">
+        <div class="message-container">
+            @for(message of messages; track message.id) {
+                <standard-message [message]="message" [messages]="messages"/>
+            }        
+        </div>
+        <div class="recipients">
+            @for (recipient of recipients; track recipient.id) {
+                <div class="recipient">
+                    <img src="{{getAvatar(recipient)}}" alt="" class="recipient-avatar">
+                    <p class="recipient-name">{{recipient.username}}</p>
+                </div>
+            }
+        </div>
+    </div>
+} @else {
+    <div class="message-container">
+        @for(message of messages; track message.id) {
+            <standard-message [message]="message" [messages]="messages"/>
+        }        
+    </div>
 }

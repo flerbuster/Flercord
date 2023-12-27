@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { DmChannel, Guild, ReadyEvent } from '../DiscordApi/Interface';
+import { DmChannel, Guild, ReadyEvent, Recipient } from '../DiscordApi/Interface';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 import FlercordLocalStorage from '../LocalStorage/FlercordLocalStorage';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +27,7 @@ export class FlercordComponent {
   tokeninput = ""
 
   guilds: Guild[] = [];
+  recipients: Recipient[] = [];
 
 
 
@@ -35,6 +36,7 @@ export class FlercordComponent {
   on_click_channel = (channel: DisplayableDmChannel) => {
     console.log(channel)
     this.open_channel = channel.id
+    this.recipients = channel.recipients
     console.log(this.open_channel)
   }
 

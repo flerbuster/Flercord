@@ -32,39 +32,42 @@
 }
 
 .dayDivider {
-    width: 100%;
-    color: lightgray;
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
     padding: 0;
     margin-bottom: 2rem;
     margin-top: 1rem;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: $font-one;
     text-align: center;
     position: relative;
     overflow: hidden;
+    background-color: $bg-color-dark-3;
     z-index: 1;
-    background-color: inherit;
 }
 
-.dayDivider::before, .dayDivider::after {
-    z-index: -1;
-    content: "";
+.dayDivider::before,
+.dayDivider::after {
+    content: '';
     position: absolute;
     top: 50%;
+    width: calc(50% - 85px); /* Adjusted width to include margin */
     height: 1px;
-    width: 82.5%;
-    background-color: rgba(200, 200, 200, 0.2);
+    background-color: rgba(255, 255, 255, 0.15);
+    z-index: -1;
 }
 
 .dayDivider::before {
     left: 0;
-    transform: translateX(-50%);
+    margin-left: 10px; /* Margin on the left */
 }
 
 .dayDivider::after {
     right: 0;
-    transform: translateX(50%);
+    margin-right: 10px; /* Margin on the right */
 }
+
+
+
 
 
 .avatar {
@@ -95,7 +98,7 @@
 .timestamp {
     margin: 0;
     padding-left: 0.4rem;
-    padding-top: 0.75rem;
+    padding-top: 0.6rem;
     font-family: Arial;
     font-size: 0.75rem;
     color: lightgray;

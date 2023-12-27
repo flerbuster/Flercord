@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 import DiscordAPI from '../DiscordApi/DiscordApi';
-import { DmChannel, Status } from '../DiscordApi/Interface';
+import { DmChannel, Recipient, Status } from '../DiscordApi/Interface';
 
 export interface DisplayableDmChannel {
   name: string,
   icon_url: string,
   description: string,
   id: string,
+  recipients: Recipient[],
   status?: Status
 }
 
@@ -26,7 +27,7 @@ export class DmChannelsComponent {
 
   displayableDmChannel(dmChannel: DmChannel): DisplayableDmChannel {
     let name = ""
-    let icon_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/310px-Placeholder_view_vector.svg.png"
+    let icon_url = ""
     let description = ""
     if (dmChannel.name) name = dmChannel.name
     else name = dmChannel.recipients.map((it) => it.global_name || it.username).join(", ")
@@ -36,7 +37,7 @@ export class DmChannelsComponent {
     if (name.length > maxsize) name = name.substring(0, maxsize-3) + "..."
 
     if (dmChannel.icon) icon_url = `https://cdn.discordapp.com/channel-icons/${dmChannel.id}/${dmChannel.icon}`;
-    else if (dmChannel.recipients.length > 0 && dmChannel.recipients[0].avatar) icon_url =  `https://cdn.discordapp.com/avatars/${dmChannel.recipients[0].id}/${dmChannel.recipients[0].avatar}`
+    else if (dmChannel.recipients.length) icon_url =  DiscordAPI.userAvatar(dmChannel.recipients[0])
     
 
     description = dmChannel.recipients.length + " recipient(s)"
@@ -45,7 +46,8 @@ export class DmChannelsComponent {
       name: name,
       icon_url: icon_url,
       description: description,
-      id: dmChannel.id
+      id: dmChannel.id,
+      recipients: dmChannel.recipients
     }
   }
 }

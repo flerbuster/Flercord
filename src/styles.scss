@@ -36,6 +36,28 @@ $color-1: #6610f2;
     }
 }
 
+@mixin flercord-scrollbar {
+    &::-webkit-scrollbar {
+        width: 0.3em;
+        border-radius: 0.25rem;
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background-color: #333;
+        border-radius: 0.25rem;
+      }
+    
+      &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.01);
+        border-radius: 0.25rem;
+      }
+    
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: #444;
+        border-radius: 0.25rem;
+      }
+}
+
 body {
     margin: 0;
 }

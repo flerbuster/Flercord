@@ -133,7 +133,7 @@ export interface Author {
     upload_url: string;
   }
 
-  interface Recipient {
+  export interface Recipient {
     id: string;
     username: string;
     global_name: string | undefined;

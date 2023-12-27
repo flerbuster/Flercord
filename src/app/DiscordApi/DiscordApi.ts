@@ -251,4 +251,12 @@ export default class DiscordAPI {
 
         // TODO: mit browser funktionieren, überhaupt funtionieren
     }
+
+
+    // Util
+    static userAvatar(user: { avatar?: string, id: string }): string {
+      let icon_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/310px-Placeholder_view_vector.svg.png"
+      if (user.avatar) icon_url =  `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`
+      return icon_url
+    }
 }

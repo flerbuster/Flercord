@@ -113,6 +113,8 @@
     align-items: center;
     max-height: 100vh;
     overflow-y: auto;
+    @include flercord-scrollbar;
+    
     img {
         $img-size: 3.5rem;
         width: $img-size;
@@ -130,10 +132,10 @@
     background-color: $bg-color-dark-2;
     max-height: 100vh;
     overflow-y: auto;
+
+    @include flercord-scrollbar;
 }
 
 .channel-view {
     background-color: $bg-color-dark-3;
-    max-height: 100vh;
-    overflow-y: auto;
 }
