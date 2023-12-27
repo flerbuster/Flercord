@@ -7,7 +7,7 @@
                 }
             </div>
             @if (channel_id) {
-                <message-button [sendMessage]="sendMessage"/>
+                <message-button [onType]="onType" [sendMessage]="sendMessage"/>
             }
         </div>
 
@@ -29,7 +29,7 @@
             }
         </div>
         @if (channel_id) {
-            <message-button [sendMessage]="sendMessage"/>
+            <message-button [onType]="onType" [sendMessage]="sendMessage"/>
         }
     </div>
 }

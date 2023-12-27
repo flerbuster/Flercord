@@ -121,6 +121,19 @@ export default class DiscordAPI {
         fetch(`${this.base_url}/channels/${channel_id}/messages/${message_id}`, options)
     }
 
+    // typing
+    static async type(channel_id: string) {
+      const options = {
+        method: 'POST',
+        headers: {
+          authorization: FlercordLocalStorage.token || "",
+          'content-type': 'application/json',
+        }
+      };
+      
+      fetch(`${this.base_url}/channels/${channel_id}/typing`, options)
+    }
+
 
     // User
     static async fetchUserDmChannels(): Promise<DmChannel[]> {

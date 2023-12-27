@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class MessageButtonComponent {
   @Input() sendMessage: (message: string) => any = () => {};
+  @Input() onType: (event: Event) => any = () => {}
+
   current_message: string = ""
 
 
@@ -27,6 +29,7 @@ export class MessageButtonComponent {
   onInput(event: Event) {
     const element = this.messageDiv.nativeElement;
     this.current_message = element.innerText;
+    this.onType(event)
   }
 
   send() {

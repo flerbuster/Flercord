@@ -90,4 +90,15 @@ export class ChannelViewComponent {
       })
     } 
   }
+
+  getRandomInt(max: number): number {
+    return Math.floor(Math.random() * max);
+  }
+  
+
+  onType = (event: Event) => {
+    if (this.getRandomInt(10) == 0 && this.channel_id) {
+      DiscordAPI.type(this.channel_id)
+    }
+  }
 }
