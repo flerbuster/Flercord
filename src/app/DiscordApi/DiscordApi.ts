@@ -204,7 +204,7 @@ export default class DiscordAPI {
               "Content-Type": "application/json"
             }
           }
-          const response = await fetch(`${this.base_url}/guilds/${guild_id}/channel`, options);
+          const response = await fetch(`${this.base_url}/guilds/${guild_id}/channels`, options);
           const data = await response.json() as GuildChannel[];
         
             return data;

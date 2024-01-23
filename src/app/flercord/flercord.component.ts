@@ -1,10 +1,11 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { DmChannel, Guild, ReadyEvent, Recipient } from '../DiscordApi/Interface';
+import { DmChannel, Guild, ReadyEvent, Recipient, SharedChannel } from '../DiscordApi/Interface';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 import FlercordLocalStorage from '../LocalStorage/FlercordLocalStorage';
 import { FormsModule } from '@angular/forms';
 import { DisplayableDmChannel, DmChannelsComponent } from '../dm-channels/dm-channels.component';
 import { ChannelViewComponent } from '../channel-view/channel-view.component';
+import { GuildChannelSelectorComponent } from '../guild-channel-selector/guild-channel-selector.component';
 
 @Component({
   selector: 'app-flercord',
@@ -12,7 +13,8 @@ import { ChannelViewComponent } from '../channel-view/channel-view.component';
   imports: [
     FormsModule,
     DmChannelsComponent,
-    ChannelViewComponent
+    ChannelViewComponent,
+    GuildChannelSelectorComponent
   ],
   templateUrl: './flercord.component.html',
   styleUrl: './flercord.component.scss'
@@ -29,16 +31,17 @@ export class FlercordComponent {
   guilds: Guild[] = [];
   recipients: Recipient[] = [];
 
-
-
-  open_channel: string | undefined = undefined
+  open_channel: SharedChannel | undefined = undefined
+  open_guild: Guild | undefined = undefined
 
   on_click_channel = (channel: DisplayableDmChannel) => {
-    this.open_channel = channel.id
+    this.open_channel = channel.channel
     this.recipients = channel.recipients
   }
 
-
+  onOpenChannel(channel: SharedChannel) {
+    this.open_channel = channel
+  }
 
   initialize() {
     const discordGateway = DiscordGateway.getInstance();
@@ -72,5 +75,9 @@ export class FlercordComponent {
       return base + guild.id + "/" + guild.icon
     }
     return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHN8VZBh3H-DJG7Cp3kfbRDnd7UF932qrhJMVqjA7uJw&sf"
+  }
+
+  selectGuild(guild: Guild) {
+    this.open_guild = guild
   }
 }

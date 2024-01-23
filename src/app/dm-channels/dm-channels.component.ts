@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 import DiscordAPI from '../DiscordApi/DiscordApi';
-import { DmChannel, Recipient, Status } from '../DiscordApi/Interface';
+import { DmChannel, Recipient, SharedChannel, Status } from '../DiscordApi/Interface';
 
 export interface DisplayableDmChannel {
   name: string,
@@ -9,7 +9,9 @@ export interface DisplayableDmChannel {
   description: string,
   id: string,
   recipients: Recipient[],
-  status?: Status
+  status?: Status,
+
+  channel: SharedChannel
 }
 
 @Component({
@@ -21,7 +23,7 @@ export interface DisplayableDmChannel {
 })
 export class DmChannelsComponent {
   @Input() onClickChannel: (channel: DisplayableDmChannel) => any = () => {};
-  @Input() open_channel: string | undefined = ""
+  @Input() open_channel: SharedChannel | undefined = undefined
 
   dmChannels = DiscordAPI.sortDmChannels(DiscordGateway.getInstance().data?.private_channels || []).map((it) => this.displayableDmChannel(it))
 
@@ -47,7 +49,9 @@ export class DmChannelsComponent {
       icon_url: icon_url,
       description: description,
       id: dmChannel.id,
-      recipients: dmChannel.recipients
+      recipients: dmChannel.recipients,
+
+      channel: dmChannel
     }
   }
 }

@@ -8,16 +8,23 @@
 <div class="flercord">
     <nav class="guilds">
         @for (guild of guilds; track guild.id) {
-            <img src="{{getGuildIconUrl(guild)}}">
+            <img src="{{getGuildIconUrl(guild)}}" (click)="selectGuild(guild)">
           } @empty {
             No Guilds
           }
     </nav>
-    <div class="channel-selector">
-        <dm-channels [open_channel]="open_channel" [onClickChannel]="on_click_channel"/>
-    </div>
+    @if (open_guild == undefined) {
+        <div class="channel-selector">
+            <dm-channels [open_channel]="open_channel" [onClickChannel]="on_click_channel"/>
+        </div>
+    } @else {
+        <div class="guild-channel-selector">
+            <guild-channel-selector [guild]="open_guild" [open_channel]="open_channel" (toggle_channel)="onOpenChannel($event)"></guild-channel-selector>
+        </div>
+    }
+ 
     <div class="channel-view">
-        <channel-view [channel_id]="open_channel" [recipients]="recipients"/>
+        <channel-view [channel_id]="open_channel?.id" [recipients]="recipients"/>
     </div>
 </div>
 } @else {
