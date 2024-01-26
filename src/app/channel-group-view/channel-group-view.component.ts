@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ChannelGroup, ChannelType, GuildChannel, SharedChannel } from '../DiscordApi/Interface';
+import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 
 @Component({
   selector: 'app-channel-group-view',
@@ -22,6 +23,7 @@ export class ChannelGroupViewComponent {
 
   changeChannel(ch: GuildChannel) {
     this.toggle_channel.emit(ch);
+    DiscordGateway.getInstance().voiceGateway.connectTo(ch.guild_id, ch.id, false, false)
   }
 
   getSvgPath(channel: GuildChannel) {

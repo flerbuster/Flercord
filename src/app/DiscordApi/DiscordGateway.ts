@@ -1,5 +1,8 @@
 import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
+import { Command } from "../command/Command";
+import DiscordAPI from "./DiscordApi";
 import { ReadyEvent } from "./Interface";
+import { DiscordVoiceGateway } from "./VoiceGateway";
 
 enum ClientActionOpCode {
     Dispatch = 0,
@@ -19,6 +22,7 @@ export class DiscordGateway {
     private static instance: DiscordGateway | null = null;
     private log = true;
     data?: ReadyEvent;
+    public voiceGateway: DiscordVoiceGateway
   
     ws: WebSocket | undefined;
     private heartbeatInterval: number = 999999;
@@ -31,6 +35,7 @@ export class DiscordGateway {
     }
   
     private constructor() {
+      this.voiceGateway = new DiscordVoiceGateway()
     }
   
     static getInstance(): DiscordGateway {
@@ -66,6 +71,11 @@ export class DiscordGateway {
   
           console.log(eventData.d)
           this.data = eventData.d as ReadyEvent
+          this.voiceGateway.initializeEvents()
+          Command.initializeCommandEventListener()
+
+          //this.voiceGateway.connectTo("900864183246135346", "900864183690743840")
+
         } else if (eventData.op === ClientActionOpCode.InvalidSession) {
           this.ws?.close();
           this.connectToWebSocket();
@@ -116,6 +126,14 @@ export class DiscordGateway {
         }
       }
       this.connectToWebSocket(this.data?.resume_gateway_url, resumePayload);
+    }
+
+    sendPayload(payload: any) {
+      if (this.ws)
+        if (this.ws.readyState === WebSocket.OPEN) {
+          console.log("sending payload", payload);
+          this.ws.send(JSON.stringify(payload));
+        }
     }
   
     private sendIdentifyPayload() {

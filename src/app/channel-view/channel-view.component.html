@@ -3,7 +3,7 @@
         <div class="ctnr">
             <div class="message-container" #messagesDiv>
                 @for(message of messages; track message.id) {
-                    <standard-message [message]="message" [messages]="messages"/>
+                    <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)"/>
                 }
             </div>
             @if (channel_id) {
@@ -25,7 +25,7 @@
     <div class="ctnr">
         <div class="message-container" #messagesDiv>
             @for(message of messages; track message.id) {
-                <standard-message [message]="message" [messages]="messages"/>
+                <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)"/>
             }
         </div>
         @if (channel_id) {

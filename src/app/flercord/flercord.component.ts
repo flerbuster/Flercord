@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { DisplayableDmChannel, DmChannelsComponent } from '../dm-channels/dm-channels.component';
 import { ChannelViewComponent } from '../channel-view/channel-view.component';
 import { GuildChannelSelectorComponent } from '../guild-channel-selector/guild-channel-selector.component';
+import { ToastAlertComponent } from '../toast-alert/toast-alert.component';
+import { ToastState } from '../toast-alert/ToastState';
 
 @Component({
   selector: 'app-flercord',
@@ -14,13 +16,16 @@ import { GuildChannelSelectorComponent } from '../guild-channel-selector/guild-c
     FormsModule,
     DmChannelsComponent,
     ChannelViewComponent,
-    GuildChannelSelectorComponent
+    GuildChannelSelectorComponent,
+    ToastAlertComponent
   ],
   templateUrl: './flercord.component.html',
   styleUrl: './flercord.component.scss'
 })
 export class FlercordComponent {
   constructor(private chRef: ChangeDetectorRef) { }
+
+  toasts = []
 
   initialized = false
 
@@ -33,6 +38,7 @@ export class FlercordComponent {
 
   open_channel: SharedChannel | undefined = undefined
   open_guild: Guild | undefined = undefined
+
 
   on_click_channel = (channel: DisplayableDmChannel) => {
     this.open_channel = channel.channel
@@ -57,9 +63,16 @@ export class FlercordComponent {
   }
 
   ngOnInit() {
+    ToastState.toastAdd.subscribe((toast) => this.toasts.push(toast))
+    ToastState.toastDelete.subscribe((index) => this.toasts.splice(index, 1))
+
     if (this.token) {
       this.initialize()
     }
+  }
+
+  deleteToast(index: number) {
+    ToastState.deleteToast(index)
   }
 
   settoken() {

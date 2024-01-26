@@ -1,21 +1,34 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Attachment, Embed, Message } from '../DiscordApi/Interface';
+import { DeletableDirective } from '../deletable/Deletable.directive';
+import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 
 @Component({
   selector: 'standard-message',
   standalone: true,
-  imports: [],
+  imports: [DeletableDirective],
   templateUrl: './standard-message.component.html',
   styleUrl: './standard-message.component.scss'
 })
 export class StandardMessageComponent {
-  @Input() message: any;
+  @Input() message: Message;
   @Input() messages: Message[] = [];
+  @Output() onDelete = new EventEmitter()
 
   isReply: boolean = false;
 
+  deletable: boolean = false
+
   ngOnInit(): void {
     this.isReply = this.message.referenced_message != undefined
+  }
+
+  ngOnChanges() {
+    this.deletable = this.message.author.id == DiscordGateway.getInstance().data.user.id
+  }
+
+  deleteSelf = () => {
+    this.onDelete.emit()
   }
 
   getMinutesDifference(date1: Date, date2: Date): number {

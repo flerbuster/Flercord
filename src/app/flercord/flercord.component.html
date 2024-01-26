@@ -5,6 +5,12 @@
         <button id="input-btn" (click)="settoken()">Login</button>
     </div>
 } @else if(initialized) {
+    <div class="toasts">
+        @for (toast of toasts; track toast; let idx = $index) {
+            <app-toast-alert [toast]="toast" (onDelete)="deleteToast(idx)"></app-toast-alert>
+        }
+    </div>
+
 <div class="flercord">
     <nav class="guilds">
         @for (guild of guilds; track guild.id) {

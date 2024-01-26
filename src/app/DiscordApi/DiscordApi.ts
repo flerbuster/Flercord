@@ -2,7 +2,7 @@ import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
 import { DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
 
 export default class DiscordAPI {
-    private constructor() {};
+    private constructor() { };
 
     public static base_url =  'https://discord.com/api/v9'
 
@@ -48,7 +48,7 @@ export default class DiscordAPI {
             },
           };
           const response = await fetch(
-            `${this.base_url}/channels/${channel_id}/messages`,
+            `${this.base_url}/channels/${channel_id}/messages?limit=100`,
             options
           );
           const data = await response.json() as Message[]
@@ -109,6 +109,33 @@ export default class DiscordAPI {
         return await(await fetch(`${this.base_url}/channels/${channel_id}/messages`, options)).json() as Message;
     }
 
+    static async respondToMessage(channel_id: string, message_id: string, content?: string, tts?: boolean, attachments?: DiscordMessageAttachment[]): Promise<Message> {
+      let body = {
+        mobile_network_type: 'unknown',
+        content: content,
+        nonce: this.generateNonce(),
+        tts: tts,
+        flags: 0,
+        attachments: attachments,
+        message_reference: {
+          channel_id: channel_id,
+          message_id: message_id
+        }
+      };
+  
+      const options = {
+        method: 'POST',
+        headers: {
+          authorization: FlercordLocalStorage.token || "",
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      };
+  
+      console.log(body);
+  
+      return await(await fetch(`${this.base_url}/channels/${channel_id}/messages`, options)).json() as Message;
+  }
     static async deleteMessage(channel_id: string, message_id: string): Promise<void> {
         const options = {
           method: 'DELETE',
@@ -119,6 +146,17 @@ export default class DiscordAPI {
         };
         
         fetch(`${this.base_url}/channels/${channel_id}/messages/${message_id}`, options)
+    }
+
+    static async deleteLastMessages(messagesa: number, channel_id: string) {
+      let messages = await this.getMessages(channel_id)
+      let i = 0
+      for (let message of messages) {
+        i++
+        setTimeout(() => {
+          this.deleteMessage(channel_id, message.id)
+        }, i*1550)
+      }
     }
 
     // typing
