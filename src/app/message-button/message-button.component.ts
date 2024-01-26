@@ -1,5 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Author, Message } from '../DiscordApi/Interface';
+import DiscordAPI from '../DiscordApi/DiscordApi';
 
 @Component({
   selector: 'message-button',
@@ -13,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 export class MessageButtonComponent {
   @Input() sendMessage: (message: string) => any = () => {};
   @Input() onType: (event: Event) => any = () => {}
+  @Input() replyMessage: Message
 
   current_message: string = ""
 
@@ -35,5 +38,9 @@ export class MessageButtonComponent {
   send() {
     this.sendMessage(this.current_message)
     this.setValue("")
+  }
+
+  getAvatar(author: Author) {
+    return DiscordAPI.userAvatar(author)
   }
 }

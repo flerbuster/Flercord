@@ -1,4 +1,13 @@
 <div>
+    @if (replyMessage) {
+    <div class="replyTo">
+        <img [src]="getAvatar(replyMessage!.author)" class="reply-avatar">
+        <p class="reply-username">{{replyMessage.author.global_name}}</p>
+        <p class="reply-message">{{replyMessage.content}}</p>
+
+    </div>
+    }
+
     <div class="bottom-left-div">
         <div
             #messageDiv

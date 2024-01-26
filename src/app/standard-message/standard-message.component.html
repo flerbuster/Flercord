@@ -3,7 +3,7 @@
         <div class="dayDivider">{{ getDeviderText() }}</div>
     }
   
-    <div class="message-wrap" [deletable]="deleteSelf" [deletableIf]="deletable">
+    <div class="message-wrap" [deletable]="deleteSelf" [deletableIf]="deletable" (click)="clickMessage($event)">
         @if (isReply) {
             <div class="reply">
                 <img
@@ -28,7 +28,7 @@
         <div class="msg-wrap">
             @if (shouldDrawSurroundings()) {
                 <div class="topdata">
-                    <p class="author">{{ message.author.username }}</p>
+                    <p class="author">{{ message.author.global_name ?? message.author.username }}</p>
                     <p class="timestamp">{{ getFormattedTimestamp(message.timestamp) }}</p>
                 </div>
             }

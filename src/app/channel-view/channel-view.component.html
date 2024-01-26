@@ -3,11 +3,11 @@
         <div class="ctnr">
             <div class="message-container" #messagesDiv>
                 @for(message of messages; track message.id) {
-                    <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)"/>
+                    <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)" (startReply)="startReply(message)"/>
                 }
             </div>
             @if (channel_id) {
-                <message-button [onType]="onType" [sendMessage]="sendMessage"/>
+                <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo"/>
             }
         </div>
 
@@ -25,11 +25,11 @@
     <div class="ctnr">
         <div class="message-container" #messagesDiv>
             @for(message of messages; track message.id) {
-                <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)"/>
+                <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)" (startReply)="startReply(message)"/>
             }
         </div>
         @if (channel_id) {
-            <message-button [onType]="onType" [sendMessage]="sendMessage"/>
+            <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo"/>
         }
     </div>
 }

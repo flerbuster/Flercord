@@ -58,3 +58,24 @@
       font-size: 1rem;
     }
   }
+
+  .replyTo {
+    width: 100%;
+    max-width: 50vw;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    overflow: hidden;
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 1rem;
+    }
+
+    .reply-username {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+  }

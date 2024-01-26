@@ -4,6 +4,7 @@ import DiscordAPI from '../DiscordApi/DiscordApi';
 import { Message, Recipient } from '../DiscordApi/Interface';
 import { MessageButtonComponent } from '../message-button/message-button.component';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
+import { ToastState } from '../toast-alert/ToastState';
 
 @Component({
   selector: 'channel-view',
@@ -20,6 +21,8 @@ export class ChannelViewComponent {
 
   @Input() channel_id: string | undefined = ""
   @Input() recipients: Recipient[] = []
+
+  replyTo: Message | undefined = undefined
 
   @ViewChild('messagesDiv')
   messagesDiv!: ElementRef;
@@ -40,9 +43,15 @@ export class ChannelViewComponent {
         }, 200)
       }
     })
+
+    DiscordGateway.getInstance().onEvent("MESSAGE_UPDATE", (message: Message) => {
+      let index = this.messages.findIndex((msg) => msg.id == message.id)
+      if (index >= 0) this.messages[index] = message
+    })
   }
 
   async ngOnChanges() {
+    this.replyTo = undefined
     this.changed = true
 
     setTimeout(() => this.changed = false, 150)
@@ -52,7 +61,7 @@ export class ChannelViewComponent {
 
     setTimeout(() => {
       this.scrollToBottom()
-    }, 200)
+    }, 100)
 
     setInterval(() => {
       if (this.isAtTop() && !this.fetching && this.messages.length > 0 && this.channel_id && !this.changed) {
@@ -66,9 +75,10 @@ export class ChannelViewComponent {
           setTimeout(() => {
             let nmax = this.messagesDiv.nativeElement.scrollHeight
           
-            this.scrollTo(nmax - cmax)
+            if ((this.messagesDiv.nativeElement.scrollTop - cmax) > 100 )this.scrollToBottom()
+            else this.scrollTo(nmax - cmax)
             this.fetching = false
-          }, 200)
+          }, 30)
         })
         .catch((error) => {
           console.log('Error fetching messages:', error);
@@ -97,13 +107,24 @@ export class ChannelViewComponent {
   }
 
   sendMessage = (message: string) => {
+    let reply = this.replyTo
+    this.replyTo = undefined
     if (message && this.channel_id) {
-      DiscordAPI.sendMessage(this.channel_id, message).then((message: Message) => {
-        //this.messages.push(message)
-        setTimeout(() => {
-          this.scrollToBottom()
-        }, 200)
-      })
+      if (reply) {
+        DiscordAPI.respondToMessage(this.channel_id, reply.id, message).then((message: Message) => {
+          //this.messages.push(message)
+          setTimeout(() => {
+            this.scrollToBottom()
+          }, 200)
+        })
+      } else { 
+        DiscordAPI.sendMessage(this.channel_id, message).then((message: Message) => {
+          //this.messages.push(message)
+          setTimeout(() => {
+            this.scrollToBottom()
+          }, 200)
+        })
+      }
     } 
   }
 
@@ -119,9 +140,18 @@ export class ChannelViewComponent {
   }
 
   deleteMessage = (message: Message) => {
-    
     DiscordAPI.deleteMessage(this.channel_id, message.id).then((data) => {
       this.messages = this.messages.filter((msg) => msg.id != message.id)
+    }).then(() => {
+      ToastState.addToast({
+        title: "deleted message",
+        text: message.content,
+        type: "success"
+      })
     })
+  }
+
+  startReply(message: Message) {
+    this.replyTo = message
   }
 }

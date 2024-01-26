@@ -14,6 +14,7 @@ export class StandardMessageComponent {
   @Input() message: Message;
   @Input() messages: Message[] = [];
   @Output() onDelete = new EventEmitter()
+  @Output() startReply = new EventEmitter()
 
   isReply: boolean = false;
 
@@ -175,5 +176,11 @@ export class StandardMessageComponent {
     }
 
     return { width, height };
-}
+  }
+
+  clickMessage(event: MouseEvent) {
+    if (event.ctrlKey) {
+      this.startReply.emit()
+    }
+  }
 }
