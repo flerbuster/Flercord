@@ -20,10 +20,6 @@ export class StandardMessageComponent {
 
   deletable: boolean = false
 
-  ngOnInit(): void {
-    this.isReply = this.message.referenced_message != undefined
-  }
-
   ngOnChanges() {
     this.deletable = this.message.author.id == DiscordGateway.getInstance().data.user.id
   }

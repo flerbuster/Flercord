@@ -34,20 +34,7 @@ export class ChannelViewComponent {
   changed = false
 
   ngOnInit() {
-    DiscordGateway.getInstance().onEvent("MESSAGE_CREATE", (message: Message) => {
-      if (message.channel_id == this.channel_id) {
-        this.messages.push(message)
 
-        setTimeout(() => {
-          if ((this.messagesDiv.nativeElement.scrollTop - this.messagesDiv.nativeElement.scrollHeight) < 75) this.scrollToBottom()
-        }, 200)
-      }
-    })
-
-    DiscordGateway.getInstance().onEvent("MESSAGE_UPDATE", (message: Message) => {
-      let index = this.messages.findIndex((msg) => msg.id == message.id)
-      if (index >= 0) this.messages[index] = message
-    })
   }
 
   async ngOnChanges() {
@@ -62,6 +49,23 @@ export class ChannelViewComponent {
     setTimeout(() => {
       this.scrollToBottom()
     }, 100)
+
+    DiscordGateway.getInstance().onEvent("MESSAGE_CREATE", (message: Message) => {
+      if (message.channel_id == this.channel_id) {
+        if (!this.messages.find((msg) => msg.id == message.id)) {
+          this.messages.push(message)
+
+          setTimeout(() => {
+            if ((this.messagesDiv.nativeElement.scrollTop - this.messagesDiv.nativeElement.scrollHeight) < 75) this.scrollToBottom()
+          }, 200)
+        }
+      }
+    })
+
+    DiscordGateway.getInstance().onEvent("MESSAGE_UPDATE", (message: Message) => {
+      let index = this.messages.findIndex((msg) => msg.id == message.id)
+      if (index >= 0) this.messages[index] = message
+    })
 
     setInterval(() => {
       if (this.isAtTop() && !this.fetching && this.messages.length > 0 && this.channel_id && !this.changed) {
@@ -112,15 +116,16 @@ export class ChannelViewComponent {
     if (message && this.channel_id) {
       if (reply) {
         DiscordAPI.respondToMessage(this.channel_id, reply.id, message).then((message: Message) => {
-          //this.messages.push(message)
           setTimeout(() => {
+            if (!this.messages.find((msg) => msg.id == message.id)) this.messages.push(message)
+
             this.scrollToBottom()
           }, 200)
         })
       } else { 
         DiscordAPI.sendMessage(this.channel_id, message).then((message: Message) => {
-          //this.messages.push(message)
           setTimeout(() => {
+            if (!this.messages.find((msg) => msg.id == message.id)) this.messages.push(message)
             this.scrollToBottom()
           }, 200)
         })
@@ -140,6 +145,7 @@ export class ChannelViewComponent {
   }
 
   deleteMessage = (message: Message) => {
+    console.log("delete: ", message)
     DiscordAPI.deleteMessage(this.channel_id, message.id).then((data) => {
       this.messages = this.messages.filter((msg) => msg.id != message.id)
     }).then(() => {

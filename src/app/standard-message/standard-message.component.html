@@ -4,14 +4,14 @@
     }
   
     <div class="message-wrap" [deletable]="deleteSelf" [deletableIf]="deletable" (click)="clickMessage($event)">
-        @if (isReply) {
+        @if (message.referenced_message) {
             <div class="reply">
                 <img
                     class="reply-avatar"
                     src="{{ getMessageAuthorAvatarUrl(message.referenced_message!) }}"
                 />
                 <p class="reply-username">
-                    {{ getMessageAuthorAvatarUrl(message) }}
+                    {{ message.referenced_message!.author.global_name ?? message.referenced_message!.author.username }}
                 </p>
             </div>
         }
