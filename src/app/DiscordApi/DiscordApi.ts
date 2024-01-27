@@ -1,5 +1,6 @@
 import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
-import { DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
+import { DiscordGateway } from "./DiscordGateway";
+import { Application, ApplicationCommand, ApplicationCommandResponse, CommandInteractionData, DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
 
 export default class DiscordAPI {
     private constructor() { };
@@ -250,6 +251,77 @@ export default class DiscordAPI {
           console.error('Error:', error);
           return []
         }
+    }
+
+    // Command
+    static async getApplicationCommands(guild_id: string): Promise<ApplicationCommandResponse> {
+      try {
+        const options = {
+          method: "GET",
+          headers: {
+            authorization: FlercordLocalStorage.token || "",
+            "Content-Type": "application/json"
+          }
+        }
+        const response = await fetch(`${this.base_url}/guilds/${guild_id}/application-command-index`, options);
+        const data = await response.json() as ApplicationCommandResponse;
+      
+          return data;
+      } catch (error) {
+        console.error('Error:', error);
+        return undefined
+      }
+    }
+
+    static async useCommand(guild_id: string, 
+      channel_id: string, 
+      command: ApplicationCommand,
+      application: Application
+      ) {
+      let session_id = DiscordGateway.getInstance().data.session_id
+
+      let data: CommandInteractionData = {
+        type: 2,
+        application_id: application.id,
+        guild_id: guild_id,
+        channel_id: channel_id,
+        session_id: session_id,
+        data: {
+          version: command.version,
+          id: command.id,
+          name: command.name,
+          type: command.type,
+          options: [],
+          application_command: {
+            id: command.id,
+            type: command.type,
+            application_id: command.application_id,
+            version: command.version,
+            name: command.name,
+            description: command.description,
+            integration_types: command.integration_types,
+            global_popularity_rank: 0,
+            options: command.options,
+            description_localized: command.description,
+            name_localized: command.name
+          },
+          attachments: [],
+        },
+        nonce: this.generateNonce(),
+        analytics_location: "gehirn"
+      }
+
+          
+      const options = {
+        method: 'POST',
+        headers: {
+          authorization: FlercordLocalStorage.token || "",
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+  
+      const response = await fetch("https://discord.com/api/v9/interactions", options);
     }
 
 

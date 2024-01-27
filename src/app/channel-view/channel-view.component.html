@@ -7,7 +7,8 @@
                 }
             </div>
             @if (channel_id) {
-                <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo" (onRemoveReply)="endReply()"/>
+                <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo" (onRemoveReply)="endReply()"
+                [guild_id]="guild_id" (useCommand)="useCommand($event)"/>
             }
         </div>
 
@@ -29,7 +30,8 @@
             }
         </div>
         @if (channel_id) {
-            <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo" (onRemoveReply)="endReply()"/>
+            <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo" (onRemoveReply)="endReply()"
+            [guild_id]="guild_id" (useCommand)="useCommand($event)"/>
         }
     </div>
 }

@@ -1,0 +1,19 @@
+<div class="application-overview">
+    <div class="applications">
+
+        @for (app of applications; track app) {
+            <img class="app-img" [src]="getAvatarUrl(app)" (click)="selectApp(app)">
+        }
+
+    </div>
+
+    <div class="commands">
+        @for (command of getCommands(selectedApplication); track command) {
+            <div class="command" (click)="selectCommand(command)">
+                <p>{{command.name}}</p>
+                <p>{{command.description}}</p>
+            </div>
+
+        }
+    </div>
+</div>

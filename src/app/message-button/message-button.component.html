@@ -1,5 +1,8 @@
 <div>
-    @if (replyMessage) {
+    @if (view_commands) {
+        <app-guild-application-commands-view [applications]="applications" [filter]="cmdFilter"
+        (onSelectCommand)="onSelectCommand($event)"></app-guild-application-commands-view>
+    } @else if (replyMessage) {
     <div class="replyTo" [deletable]="deleteReply">
         <img [src]="getAvatar(replyMessage!.author)" class="reply-avatar">
         <p class="reply-username">{{replyMessage.author.global_name}}</p>

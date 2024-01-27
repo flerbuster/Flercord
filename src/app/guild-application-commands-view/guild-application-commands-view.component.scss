@@ -1,0 +1,48 @@
+@import '../../styles';
+
+.application-overview {
+    height: 15rem;
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    margin: 0 1rem;
+}
+
+.app-img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.applications {
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.commands {
+    gap: 0.1rem;
+    margin: 0;
+
+    .command {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        p {
+            margin: 0;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+}
+.applications, .commands {
+    overflow-y: auto;
+    width: 100%;
+    @include flercord-scrollbar;
+    display: flex;
+    flex-direction: column;
+} 

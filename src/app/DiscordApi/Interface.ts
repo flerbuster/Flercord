@@ -582,3 +582,69 @@ export interface ReadyEvent {
     v: number,
     _trace: string[]
 }
+
+export interface Option {
+  type: number,
+  name: string,
+  description: string,
+  required: boolean,
+  autocomplete: boolean,
+  description_localized: string,
+  name_localized: string
+}
+
+export interface ApplicationCommand {
+  application_id: string,
+  description: string | undefined,
+  id: string,
+  integration_types: number[],
+  name: string,
+  type: number,
+  version: string,
+  options: Option[]
+}
+
+export interface Application {
+  bot: PublicUser,
+  description: string,
+  id: string,
+  name: string
+}
+
+export interface ApplicationCommandResponse {
+  application_commands: ApplicationCommand[],
+  applications: Application[],
+  version: string
+}
+
+
+export interface CommandInteractionData {
+  type: number,
+  application_id: string,
+  guild_id: string,
+  channel_id: string,
+  session_id: string,
+  data: {
+    version: string,
+    id: string,
+    name: string,
+    type: number,
+    options: Option[],
+    application_command: {
+      id: string,
+      type: number,
+      application_id: string,
+      version: string,
+      name: string,
+      description: string,
+      integration_types: number[],
+      global_popularity_rank: number,
+      options: Option[],
+      description_localized: string,
+      name_localized: string
+    },
+    attachments: any[]
+  },
+  nonce: string,
+  analytics_location: string
+}

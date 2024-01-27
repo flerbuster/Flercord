@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectorRef, ViewChild, ElementRef } from '@ang
 import { StandardMessageComponent } from '../standard-message/standard-message.component';
 import DiscordAPI from '../DiscordApi/DiscordApi';
 import { Message, Recipient } from '../DiscordApi/Interface';
-import { MessageButtonComponent } from '../message-button/message-button.component';
+import { CommandSelect, MessageButtonComponent } from '../message-button/message-button.component';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 import { ToastState } from '../toast-alert/ToastState';
 
@@ -20,6 +20,7 @@ export class ChannelViewComponent {
   constructor(private chRef: ChangeDetectorRef) { }
 
   @Input() channel_id: string | undefined = ""
+  @Input() guild_id: string | undefined = ""
   @Input() recipients: Recipient[] = []
 
   replyTo: Message | undefined = undefined
@@ -175,4 +176,10 @@ export class ChannelViewComponent {
     this.replyTo = undefined
   }
 
+  useCommand(command: CommandSelect) {
+    console.log("using command: ", command)
+    DiscordAPI.useCommand(this.guild_id, this.channel_id, command.command, command.application).then(() => {
+      console.log("command: ", command, " !")
+    })
+  }
 }
