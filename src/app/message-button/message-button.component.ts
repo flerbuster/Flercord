@@ -1,9 +1,10 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Application, ApplicationCommand, ApplicationCommandResponse, Author, Message } from '../DiscordApi/Interface';
+import { Application, ApplicationCommand, ApplicationCommandResponse, Author, Message, Option } from '../DiscordApi/Interface';
 import DiscordAPI from '../DiscordApi/DiscordApi';
 import { DeletableDirective } from '../deletable/Deletable.directive';
 import { GuildApplicationCommandsViewComponent } from '../guild-application-commands-view/guild-application-commands-view.component';
+import { OptionPillComponent } from '../option-pill/option-pill.component';
 
 export interface ApplicationWithCommands {
   application: Application,
@@ -15,13 +16,16 @@ export interface CommandSelect {
   application: Application
 }
 
+export type FilledOptions =  {type: number, name: string, value: any }[]
+
 @Component({
   selector: 'message-button',
   standalone: true,
   imports: [
     FormsModule,
     DeletableDirective,
-    GuildApplicationCommandsViewComponent
+    GuildApplicationCommandsViewComponent,
+    OptionPillComponent
   ],
   templateUrl: './message-button.component.html',
   styleUrl: './message-button.component.scss'
@@ -32,7 +36,7 @@ export class MessageButtonComponent implements OnChanges {
   @Input() replyMessage: Message
   @Input() guild_id: string | undefined = undefined
   @Output() onRemoveReply = new EventEmitter()
-  @Output() useCommand = new EventEmitter<CommandSelect>()
+  @Output() useCommand = new EventEmitter<{ command: CommandSelect, filledOptions: FilledOptions }>()
 
   current_message: string = ""
 
@@ -48,6 +52,8 @@ export class MessageButtonComponent implements OnChanges {
   cmdFilter: string = ""
 
   command_select: CommandSelect | undefined = undefined
+
+  filledOptions: FilledOptions = []
 
   ngOnChanges() {
     this.cachedApplications = undefined
@@ -105,7 +111,7 @@ export class MessageButtonComponent implements OnChanges {
       this.sendMessage(this.current_message)
     } else {
       
-      this.useCommand.emit(this.command_select)
+      this.useCommand.emit({ command: this.command_select, filledOptions: this.filledOptions })
       this.command_select = undefined
     }
     this.setValue("")
@@ -125,5 +131,16 @@ export class MessageButtonComponent implements OnChanges {
     this.command_select = commandSelect
     const element = this.messageDiv.nativeElement;
     (element as HTMLElement).innerText = "/" + commandSelect.command.name
+  }
+
+  changeOptionPill(option: Option, text: string) {
+    console.log("option pill: ", text)
+    let optiona = this.filledOptions.find((op) => op.name == option.name)
+    if (optiona) optiona.value = text
+    else this.filledOptions.push({
+      type: 3,
+      name: option.name,
+      value: text
+    })
   }
 }

@@ -1,0 +1,31 @@
+$pill-outline-color: rgba(120, 130, 223, 0.7);
+
+
+.option-pill {
+    outline: 1px solid $pill-outline-color;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    background-color: rgba(27, 32, 25, 0.5);
+    height: 2rem;
+    border-radius: 0.5rem;
+
+    p {
+        padding: 0 0.5rem;
+        margin-left: 0.3rem;
+        border-right: 1px solid $pill-outline-color;
+    }
+    input {
+        height: 100%;
+        background-color: rgba(127, 132, 125, 0.5);
+        border: none;
+        border-radius: 0.5rem;
+        
+        color: #eee;
+    
+        &:focus {
+            outline: none;
+        }
+    }
+}

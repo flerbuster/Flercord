@@ -1,3 +1,5 @@
+import { FilledOptions } from "../message-button/message-button.component";
+
 export interface Author {
     id: string;
     username: string;
@@ -629,7 +631,7 @@ export interface CommandInteractionData {
     id: string,
     name: string,
     type: number,
-    options: Option[],
+    options: FilledOptions,
     application_command: {
       id: string,
       type: number,

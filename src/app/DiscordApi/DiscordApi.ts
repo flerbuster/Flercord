@@ -1,4 +1,5 @@
 import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
+import { FilledOptions } from "../message-button/message-button.component";
 import { DiscordGateway } from "./DiscordGateway";
 import { Application, ApplicationCommand, ApplicationCommandResponse, CommandInteractionData, DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
 
@@ -276,7 +277,8 @@ export default class DiscordAPI {
     static async useCommand(guild_id: string, 
       channel_id: string, 
       command: ApplicationCommand,
-      application: Application
+      application: Application,
+      filledOptions: FilledOptions
       ) {
       let session_id = DiscordGateway.getInstance().data.session_id
 
@@ -291,7 +293,7 @@ export default class DiscordAPI {
           id: command.id,
           name: command.name,
           type: command.type,
-          options: [],
+          options: filledOptions,
           application_command: {
             id: command.id,
             type: command.type,
