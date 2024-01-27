@@ -33,6 +33,8 @@ export class ChannelViewComponent {
 
   changed = false
 
+  atTop = false
+
   ngOnInit() {
 
   }
@@ -40,8 +42,9 @@ export class ChannelViewComponent {
   async ngOnChanges() {
     this.replyTo = undefined
     this.changed = true
+    this.atTop = false
 
-    setTimeout(() => this.changed = false, 150)
+    setTimeout(() => this.changed = false, 300)
     if (this.channel_id) {
       this.messages = await DiscordAPI.getMessages(this.channel_id)
     }
@@ -68,21 +71,28 @@ export class ChannelViewComponent {
     })
 
     setInterval(() => {
-      if (this.isAtTop() && !this.fetching && this.messages.length > 0 && this.channel_id && !this.changed) {
+      if (this.isAtTop() && !this.fetching && this.messages.length > 0 && this.channel_id && !this.changed && !this.atTop) {
         this.fetching = true
         let current = [...this.messages]
         let last = current[0].id;
         let cmax = this.messagesDiv.nativeElement.scrollHeight
         DiscordAPI.getMessagesBefore(last, this.channel_id)
         .then((newMessages) => {
+          if (!this.changed && !this.atTop) {
           this.messages = [...current, ...newMessages].sort((a, b) => parseInt(a.id) - parseInt(b.id));
           setTimeout(() => {
             let nmax = this.messagesDiv.nativeElement.scrollHeight
+            if (nmax == cmax) {
+              this.atTop = true
+            }
           
             if ((this.messagesDiv.nativeElement.scrollTop - cmax) > 100 )this.scrollToBottom()
             else this.scrollTo(nmax - cmax)
             this.fetching = false
           }, 30)
+        } else {
+          this.fetching = false
+        }
         })
         .catch((error) => {
           console.log('Error fetching messages:', error);
@@ -160,4 +170,9 @@ export class ChannelViewComponent {
   startReply(message: Message) {
     this.replyTo = message
   }
+
+  endReply() {
+    this.replyTo = undefined
+  }
+
 }

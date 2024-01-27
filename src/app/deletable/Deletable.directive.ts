@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostListener, Input } from "@angular/core";
 })
 export class DeletableDirective {
     @Input("deletable") onDelete
-    @Input("deletableIf") deletable: boolean
+    @Input("deletableIf") deletable: boolean = true
 
     child: HTMLDivElement
 
@@ -15,6 +15,7 @@ export class DeletableDirective {
     @HostListener("mouseenter") hoverover() {
         if (!this.deletable) return
         this.child = (this.elementRef.nativeElement as HTMLElement).appendChild(document.createElement("div"))
+        this.elementRef.nativeElement.style.position = "relative"
         this.child.style.backgroundColor = "transparent"
         this.child.style.width = "20px"
         this.child.style.height = "20px"

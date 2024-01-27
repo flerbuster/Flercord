@@ -60,11 +60,11 @@
   }
 
   .replyTo {
-    width: 100%;
     max-width: 50vw;
     height: 40px;
     display: flex;
     align-items: center;
+    position: relative;
     gap: 0.7rem;
     overflow: hidden;
     img {

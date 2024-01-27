@@ -1,6 +1,6 @@
 <div>
     @if (replyMessage) {
-    <div class="replyTo">
+    <div class="replyTo" [deletable]="deleteReply">
         <img [src]="getAvatar(replyMessage!.author)" class="reply-avatar">
         <p class="reply-username">{{replyMessage.author.global_name}}</p>
         <p class="reply-message">{{replyMessage.content}}</p>

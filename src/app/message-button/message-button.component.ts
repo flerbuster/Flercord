@@ -1,13 +1,15 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Author, Message } from '../DiscordApi/Interface';
 import DiscordAPI from '../DiscordApi/DiscordApi';
+import { DeletableDirective } from '../deletable/Deletable.directive';
 
 @Component({
   selector: 'message-button',
   standalone: true,
   imports: [
     FormsModule,
+    DeletableDirective
   ],
   templateUrl: './message-button.component.html',
   styleUrl: './message-button.component.scss'
@@ -16,6 +18,7 @@ export class MessageButtonComponent {
   @Input() sendMessage: (message: string) => any = () => {};
   @Input() onType: (event: Event) => any = () => {}
   @Input() replyMessage: Message
+  @Output() onRemoveReply = new EventEmitter()
 
   current_message: string = ""
 
@@ -42,5 +45,9 @@ export class MessageButtonComponent {
 
   getAvatar(author: Author) {
     return DiscordAPI.userAvatar(author)
+  }
+
+  deleteReply = () => {
+    this.onRemoveReply.emit()
   }
 }

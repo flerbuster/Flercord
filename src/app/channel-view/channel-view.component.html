@@ -7,7 +7,7 @@
                 }
             </div>
             @if (channel_id) {
-                <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo"/>
+                <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo" (onRemoveReply)="endReply()"/>
             }
         </div>
 
@@ -29,7 +29,7 @@
             }
         </div>
         @if (channel_id) {
-            <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo"/>
+            <message-button [onType]="onType" [sendMessage]="sendMessage" [replyMessage]="replyTo" (onRemoveReply)="endReply()"/>
         }
     </div>
 }
