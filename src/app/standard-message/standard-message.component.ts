@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Attachment, Embed, Message } from '../DiscordApi/Interface';
 import { DeletableDirective } from '../deletable/Deletable.directive';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
+import { Component as Cmp } from '../DiscordApi/Interface';
 
 @Component({
   selector: 'standard-message',
@@ -15,6 +16,7 @@ export class StandardMessageComponent {
   @Input() messages: Message[] = [];
   @Output() onDelete = new EventEmitter()
   @Output() startReply = new EventEmitter()
+  @Output() useComponent = new EventEmitter<Cmp>()
 
   isReply: boolean = false;
 
@@ -177,6 +179,12 @@ export class StandardMessageComponent {
   clickMessage(event: MouseEvent) {
     if (event.ctrlKey) {
       this.startReply.emit()
+    }
+  }
+
+  clickComponent(cmp: Cmp) {
+    if (!cmp.disabled) {
+      this.useComponent.emit(cmp)
     }
   }
 

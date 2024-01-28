@@ -10,8 +10,10 @@
     <div class="commands">
         @for (command of getCommands(selectedApplication); track command) {
             <div class="command" (click)="selectCommand(command)">
-                <p>{{command.name}}</p>
-                <p>{{command.description}}</p>
+                <div class="img-container"><img [src]="getAvatarUrl(selectedApplication)"> </div>
+                <h3 class="commandName">{{command.name}}</h3>
+                <p class="commandDescription">{{command.description}}</p>
+                <p class="commandApplicationName">selectedApplication.application.bot.global_name</p>
             </div>
 
         }

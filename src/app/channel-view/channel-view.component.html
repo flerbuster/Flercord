@@ -3,7 +3,8 @@
         <div class="ctnr">
             <div class="message-container" #messagesDiv>
                 @for(message of messages; track message.id) {
-                    <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)" (startReply)="startReply(message)"/>
+                    <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)" (startReply)="startReply(message)"
+                    (useComponent)="clickComponent($event, message)"/>
                 }
             </div>
             @if (channel_id) {
@@ -26,7 +27,8 @@
     <div class="ctnr">
         <div class="message-container" #messagesDiv>
             @for(message of messages; track message.id) {
-                <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)" (startReply)="startReply(message)"/>
+                <standard-message [message]="message" [messages]="messages" (onDelete)="deleteMessage(message)" (startReply)="startReply(message)"
+                (useComponent)="clickComponent($event, message)"/>
             }
         </div>
         @if (channel_id) {

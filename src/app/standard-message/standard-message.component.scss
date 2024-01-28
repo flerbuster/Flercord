@@ -117,6 +117,42 @@
 }
 
 
+.action-button {
+    border: none;
+
+    margin: 0.3rem 0.12rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.33rem;
+    color: rgb(223, 235, 226);
+
+    &-4 {
+        background-color: rgb(210, 93, 90)
+    }
+    &-3 {
+        background-color: rgb(53, 189, 50)
+    }
+    &-2 {
+        background-color: rgb(127, 123, 132);
+    }
+
+    &-true {
+        filter: grayscale(0.5) brightness(0.5);
+
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+    &-false {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
 
 
 

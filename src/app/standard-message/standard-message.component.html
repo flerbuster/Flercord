@@ -32,113 +32,130 @@
                     <p class="timestamp">{{ getFormattedTimestamp(message.timestamp) }}</p>
                 </div>
             }
-          <p class="message">{{ message.content }}</p>
-  
-          @if (message.embeds.length > 0) {
-            <div class="embeds">
-                @for (embed of message.embeds; track embed) {
-                    <div class="embed">
-                    @if (embed.title != undefined) {
-                        <div class="no-srd">
-                            @if (embed.url == undefined) {
-                                <p class="embed-title">{{ embed.title }}</p>
-                            }
-                            @else {
-                                <a target="_blank" class="embed-title" href="{{ embed.url }}">{{embed.title}}</a>
-                            }
+            <p class="message">{{ message.content }}</p>
+    
+            @if (message.embeds.length > 0) {
+                <div class="embeds">
+                    @for (embed of message.embeds; track embed) {
+                        <div class="embed">
+                        @if (embed.title != undefined) {
+                            <div class="no-srd">
+                                @if (embed.url == undefined) {
+                                    <p class="embed-title">{{ embed.title }}</p>
+                                }
+                                @else {
+                                    <a target="_blank" class="embed-title" href="{{ embed.url }}">{{embed.title}}</a>
+                                }
+                            </div>
+                        }
+                        @if (embed.description != undefined) {
+                            <p class="embed-description">
+                                {{ embed.description }}
+                            </p>
+                        }
+                        @if (embed.image != undefined) {
+                            <img
+                                src="{{embed.image.proxy_url}}"
+                            />
+                        }
+                        @if (embed.video != undefined) {
+                            <video
+                                autoplay
+                                loop
+                                controls
+                                width="{{ resizeProportional(embed.video.width, embed.video.height, 500, 300).width }}"
+                                height="{{resizeProportional(embed.video.width, embed.video.height, 500, 300).width  }}"
+                            >
+                                <source
+                                    class="attachment-video"
+                                    src="{{ embed.video.url }}"
+                                    type="video/mp4"
+                                />
+                                Your browser does not support the video tag.
+                            </video>
+                        }
+                        @if (embed.fields != undefined) {
+                            <div class="fields">
+                                @for (field of embed.fields; track field) {
+                                    <div class="field">
+                                        <h3>{{field.name}}</h3>
+                                        <p>{{field.value}}</p>
+                                    </div>
+                                }
+                            </div>
+                        }
                         </div>
                     }
-                    @if (embed.description != undefined) {
-                        <p class="embed-description">
-                            {{ embed.description }}
-                        </p>
-                    }
-                    @if (embed.image != undefined) {
+                </div>
+            }
+
+    
+            @if (message.attachments.length > 0) {
+            <div class="attachments">
+                
+                @for (attachment of message.attachments; track attachment.id)
+                {
+                    <div
+                    c   lass="attachment"
+                    >
+                    @if (isDisplayable(attachment)) {
                         <img
-                            src="{{embed.image.proxy_url}}"
+                            class="image-attachment"
+                            src="{{ attachment.url }}"
                         />
                     }
-                    @if (embed.video != undefined) {
-                        <video
-                            autoplay
-                            loop
-                            controls
-                            width="{{ resizeProportional(embed.video.width, embed.video.height, 500, 300).width }}"
-                            height="{{resizeProportional(embed.video.width, embed.video.height, 500, 300).width  }}"
-                        >
-                            <source
-                                class="attachment-video"
-                                src="{{ embed.video.url }}"
-                                type="video/mp4"
-                            />
-                            Your browser does not support the video tag.
-                        </video>
-                    }
-                    @if (embed.fields != undefined) {
-                        <div class="fields">
-                            @for (field of embed.fields; track field) {
-                                <div class="field">
-                                    <h3>{{field.name}}</h3>
-                                    <p>{{field.value}}</p>
-                                </div>
-                            }
-                        </div>
+                    @else {
+                        @if (isVideo(attachment)) {
+                            <video
+                                width="{{ resizeProportional(attachment.width, attachment.height, 500, 300).width }}"
+                                height="{{ resizeProportional(attachment.width, attachment.height, 500, 300).height  }}"
+                                controls
+                            >
+                                <source
+                                    class="attachment-video"
+                                    src="{{ attachment.url }}"
+                                    type="video/mp4"
+                                />
+                                Your browser does not support the video tag.
+                            </video>
+                        } @else if (attachment.filename.endsWith('.ogg')) {
+                            <div class="mp3">
+                                <audio controls ><source src="{{attachment.url}}"></audio>
+                            </div>
+                        }
+                        @else {
+                            <div class="unfound-attachment">
+                                <a
+                                    class="unfound-attachment-name"
+                                    href="{{ attachment.url }}"
+                                    target="_blank"
+                                    >{{ attachment.filename }}
+                                </a>
+                                <p class="unfound-attachment-size">{{ getFileSize(attachment) }} </p>
+                                <img class="unfound-attachment-file" src="" />
+                            </div>
+                        }
                     }
                     </div>
                 }
             </div>
-        }
-  
-        @if (message.attachments.length > 0) {
-          <div class="attachments">
-            
-            @for (attachment of message.attachments; track attachment.id)
-            {
-                <div
-                c   lass="attachment"
-                >
-                @if (isDisplayable(attachment)) {
-                    <img
-                        class="image-attachment"
-                        src="{{ attachment.url }}"
-                    />
-                }
-                @else {
-                    @if (isVideo(attachment)) {
-                        <video
-                            width="{{ resizeProportional(attachment.width, attachment.height, 500, 300).width }}"
-                            height="{{ resizeProportional(attachment.width, attachment.height, 500, 300).height  }}"
-                            controls
-                        >
-                            <source
-                                class="attachment-video"
-                                src="{{ attachment.url }}"
-                                type="video/mp4"
-                            />
-                            Your browser does not support the video tag.
-                        </video>
-                    } @else if (attachment.filename.endsWith('.ogg')) {
-                        <div class="mp3">
-                            <audio controls ><source src="{{attachment.url}}"></audio>
+            }
+
+
+            @if (message.components.length > 0) {
+                <div class="components">
+                    @for (row of message.components; track row) {
+                        <div class="action-row">
+                            @for (component of row.components; track component) {
+                                @if (component.type == 2) {
+                                    <button class="action-button action-button-{{component.style}} action-button-{{component.disabled ?? false}}" [disabled]="component.disabled ?? false"
+                                    (click)="clickComponent(component)">{{component.label}}</button>
+                                }
+                            }
                         </div>
                     }
-                    @else {
-                        <div class="unfound-attachment">
-                            <a
-                                class="unfound-attachment-name"
-                                href="{{ attachment.url }}"
-                                target="_blank"
-                                >{{ attachment.filename }}
-                            </a>
-                            <p class="unfound-attachment-size">{{ getFileSize(attachment) }} </p>
-                            <img class="unfound-attachment-file" src="" />
-                        </div>
-                    }
-                }
                 </div>
             }
-          </div>
-        }
         </div>
       </div>
     </div>

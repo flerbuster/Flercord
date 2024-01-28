@@ -5,6 +5,7 @@ import { Message, Recipient } from '../DiscordApi/Interface';
 import { CommandSelect, FilledOptions, MessageButtonComponent } from '../message-button/message-button.component';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 import { ToastState } from '../toast-alert/ToastState';
+import { Component as Cmp } from '../DiscordApi/Interface';
 
 @Component({
   selector: 'channel-view',
@@ -69,7 +70,8 @@ export class ChannelViewComponent {
     DiscordGateway.getInstance().onEvent("MESSAGE_UPDATE", (message: Message) => {
       let index = this.messages.findIndex((msg) => msg.id == message.id)
       if (index >= 0) {
-        this.messages[index].embeds = message.embeds
+        if (message.embeds) this.messages[index].embeds = message.embeds
+        if (message.components) this.messages[index].components = message.components
         this.messages[index].content = message.content
         this.messages[index].edited_timestamp = new Date().toString()
       }
@@ -185,5 +187,10 @@ export class ChannelViewComponent {
     DiscordAPI.useCommand(this.guild_id, this.channel_id, event.command.command, event.command.application, event.filledOptions).then(() => {
       console.log("command: ", event.command, " !")
     })
+  }
+
+  clickComponent(component: Cmp, message: Message) {
+    DiscordAPI.clickButton(message.application_id ?? "", message.channel_id, this.guild_id, message.id, component,
+      message.flags)
   }
 }

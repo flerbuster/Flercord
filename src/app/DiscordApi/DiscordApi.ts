@@ -1,7 +1,7 @@
 import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
 import { FilledOptions } from "../message-button/message-button.component";
 import { DiscordGateway } from "./DiscordGateway";
-import { Application, ApplicationCommand, ApplicationCommandResponse, CommandInteractionData, DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
+import { Application, ApplicationCommand, ApplicationCommandResponse, CommandInteractionData, Component, DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
 
 export default class DiscordAPI {
     private constructor() { };
@@ -326,6 +326,37 @@ export default class DiscordAPI {
       const response = await fetch("https://discord.com/api/v9/interactions", options);
     }
 
+    static async clickButton(application_id: string, channel_id: string, guild_id: string, message_id: string, component: Component,
+      message_flags: number) {
+      let session_id = DiscordGateway.getInstance().data.session_id
+      
+      let message: Message
+      let data = {
+        application_id: application_id,
+        channel_id: channel_id,
+        data: {
+          component_type: component.type,
+          custom_id: component.custom_id
+        },
+        guild_id: guild_id,
+        message_flags: message_flags,
+        message_id: message_id,
+        nonce: this.generateNonce(),
+        session_id: session_id,
+        type: 3
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          authorization: FlercordLocalStorage.token || "",
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+  
+      const response = await fetch("https://discord.com/api/v9/interactions", options);
+    }
 
     // Attachment
     static async createAttachment(files: DiscordFile[], channel_id: string): Promise<DiscordAttachment[]> {

@@ -100,6 +100,14 @@ export interface Author {
     id: string,
     uploaded_filename: string
   }
+
+  export interface Component {
+    type: number,
+    style: number,
+    label: string,
+    custom_id: string,
+    disabled?: boolean
+  }
   
   export interface Message {
     id: string;
@@ -119,6 +127,11 @@ export interface Author {
     flags: number;
     message_reference: MessageReference | undefined;
     referenced_message: Message | undefined;
+    components: {
+      type: number,
+      components: Component[]
+    }[],
+    application_id?: string
     // TODO: components
   }
   
