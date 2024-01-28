@@ -13,6 +13,26 @@
     margin: 0;
 }
 
+.fields {
+    display: flex;
+    flex-wrap: wrap;
+
+    .field {
+        width: 15%;
+
+        h3 {
+            margin: 0;
+            font-size: 1.15rem;
+        }
+
+        p {
+            margin: 0;
+            font-size: 1rem;
+            color: rgba(250, 250, 250, 0.75)
+        }
+    }
+}
+
 .message-wrap {
     position: relative;
     padding: 1rem;

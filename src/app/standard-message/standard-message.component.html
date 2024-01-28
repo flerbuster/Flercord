@@ -74,6 +74,16 @@
                             Your browser does not support the video tag.
                         </video>
                     }
+                    @if (embed.fields != undefined) {
+                        <div class="fields">
+                            @for (field of embed.fields; track field) {
+                                <div class="field">
+                                    <h3>{{field.name}}</h3>
+                                    <p>{{field.value}}</p>
+                                </div>
+                            }
+                        </div>
+                    }
                     </div>
                 }
             </div>
