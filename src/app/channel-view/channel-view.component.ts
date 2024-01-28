@@ -68,7 +68,11 @@ export class ChannelViewComponent {
 
     DiscordGateway.getInstance().onEvent("MESSAGE_UPDATE", (message: Message) => {
       let index = this.messages.findIndex((msg) => msg.id == message.id)
-      if (index >= 0) this.messages[index] = message
+      if (index >= 0) {
+        this.messages[index].embeds = message.embeds
+        this.messages[index].content = message.content
+        this.messages[index].edited_timestamp = new Date().toString()
+      }
     })
 
     setInterval(() => {
