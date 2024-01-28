@@ -5,6 +5,7 @@ import DiscordAPI from '../DiscordApi/DiscordApi';
 import { DeletableDirective } from '../deletable/Deletable.directive';
 import { GuildApplicationCommandsViewComponent } from '../guild-application-commands-view/guild-application-commands-view.component';
 import { OptionPillComponent } from '../option-pill/option-pill.component';
+import { ToastState } from '../toast-alert/ToastState';
 
 export interface ApplicationWithCommands {
   application: Application,
@@ -109,12 +110,30 @@ export class MessageButtonComponent implements OnChanges {
   send() {
     if (this.command_select == undefined) {
       this.sendMessage(this.current_message)
+      this.setValue("")
     } else {
-      
-      this.useCommand.emit({ command: this.command_select, filledOptions: this.filledOptions })
-      this.command_select = undefined
+      let valid = true
+      this.command_select.command.options.forEach((commandOption) => {
+        if (commandOption.required) {
+          let filled = this.filledOptions.find((option) => option.name == commandOption.name)
+          if (!filled || filled.value.toString().trim().length == 0) {
+            ToastState.addToast({
+              title: "arguments invalid",
+              text: `${commandOption.name} is required`,
+              type: "danger"
+            })
+            valid = false
+          }
+        }
+      })
+      if (valid) {
+        this.useCommand.emit({ command: this.command_select, filledOptions: this.filledOptions })
+        this.command_select = undefined
+        this.setValue("")
+      }
+
     }
-    this.setValue("")
+    
   }
 
   getAvatar(author: Author) {

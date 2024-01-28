@@ -22,7 +22,7 @@
         >
         </div>
         @for (option of command_select?.command?.options ?? []; track option) {
-            <app-option-pill [name]="option.name" (changeText)="changeOptionPill(option, $event)"></app-option-pill>
+            <app-option-pill [name]="option.name" (changeText)="changeOptionPill(option, $event)" [required]="option.required"></app-option-pill>
         }
 
         <button class="sendmessagebutton" (click)="send()">

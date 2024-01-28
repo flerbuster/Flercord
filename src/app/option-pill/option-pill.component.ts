@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class OptionPillComponent {
   @Input() name: string
+  @Input() required: boolean
   @Output() changeText = new EventEmitter<string>()
   value: string = ""
 

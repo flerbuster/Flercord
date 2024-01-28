@@ -1,8 +1,8 @@
-$pill-outline-color: rgba(120, 130, 223, 0.7);
+$pill-outline-color-not-required: rgba(120, 130, 223, 0.7);
+$pill-outline-color-required: rgba(223, 130, 130, 0.7);
 
 
 .option-pill {
-    outline: 1px solid $pill-outline-color;
     display: flex;
     flex-direction: row;
     gap: 1rem;
@@ -11,10 +11,24 @@ $pill-outline-color: rgba(120, 130, 223, 0.7);
     height: 2rem;
     border-radius: 0.5rem;
 
+    &-false {
+        outline: 1px solid $pill-outline-color-not-required;
+
+        p {
+            border-right: 1px solid $pill-outline-color-not-required;
+        }
+    }
+
+    &-true {
+        outline: 1px solid $pill-outline-color-required;
+
+        p {
+            border-right: 1px solid $pill-outline-color-required;
+        }
+    }
     p {
         padding: 0 0.5rem;
         margin-left: 0.3rem;
-        border-right: 1px solid $pill-outline-color;
     }
     input {
         height: 100%;
