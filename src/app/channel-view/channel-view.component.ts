@@ -131,7 +131,7 @@ export class ChannelViewComponent {
     if (message && this.channel_id) {
       if (reply) {
         DiscordAPI.respondToMessage(this.channel_id, reply.id, message).then((message: Message) => {
-          setTimeout(() => {
+          if (message.id) setTimeout(() => {
             if (!this.messages.find((msg) => msg.id == message.id)) this.messages.push(message)
 
             this.scrollToBottom()
@@ -139,7 +139,7 @@ export class ChannelViewComponent {
         })
       } else { 
         DiscordAPI.sendMessage(this.channel_id, message).then((message: Message) => {
-          setTimeout(() => {
+          if (message.id) setTimeout(() => {
             if (!this.messages.find((msg) => msg.id == message.id)) this.messages.push(message)
             this.scrollToBottom()
           }, 200)
