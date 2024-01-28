@@ -13,13 +13,42 @@
     margin: 0;
 }
 
+@media only screen and (min-width: 2000px) {
+    .field {
+        width: 15%;
+    }
+}
+
+@media only screen and (max-width: 2000px) {
+    .field {
+        width: 25%;
+    }
+}
+
+@media only screen and (max-width: 1600px) {
+    .field {
+        width: 33%;
+    }
+}
+@media only screen and (max-width: 1250px) {
+    .field {
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .field {
+        width: 100%;
+    }
+}
+
+
+
 .fields {
     display: flex;
     flex-wrap: wrap;
 
     .field {
-        width: 15%;
-
         h3 {
             margin: 0;
             font-size: 1.15rem;
