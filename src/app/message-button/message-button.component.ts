@@ -87,24 +87,29 @@ export class MessageButtonComponent implements OnChanges {
     return result
   }
 
-  onInput(event: Event) {
-    const element = this.messageDiv.nativeElement;
-    this.view_commands = (element as HTMLElement).innerText.startsWith("/")
-    this.cmdFilter = (element as HTMLElement).innerText.split("/", 2)[1]
-    this.current_message = element.innerText;
-    this.onType(event)
-
-    console.log("typed, new inner text: ", element.innerText, ", view commands: ", this.view_commands, "guild id: ", this.guild_id, " filter: ", this.cmdFilter)
-    if (this.view_commands && this.guild_id) {
-      if (this.cachedApplications) {
-        this.applications = this.cachedApplications
-      } else {
-        DiscordAPI.getApplicationCommands(this.guild_id).then((response) => {
-          this.applications = this.groupApplications(response)
-          this.cachedApplications = this.applications
-        })
+  onInput(event: any) {
+    console.log(event, event.inputType)
+    const element = this.messageDiv.nativeElement as HTMLDivElement;
+    if (element.innerText.endsWith("\n") && event.inputType.includes("insert") && event.inputType != "insertLineBreak") {
+      this.send()
+    } else {
+      this.cmdFilter = (element as HTMLElement).innerText.split("/", 2)[1]
+      this.current_message = element.innerText;
+      this.onType(event)
+  
+      console.log("typed, new inner text: ", element.innerText, ", view commands: ", this.view_commands, "guild id: ", this.guild_id, " filter: ", this.cmdFilter)
+      if (this.view_commands && this.guild_id) {
+        if (this.cachedApplications) {
+          this.applications = this.cachedApplications
+        } else {
+          DiscordAPI.getApplicationCommands(this.guild_id).then((response) => {
+            this.applications = this.groupApplications(response)
+            this.cachedApplications = this.applications
+          })
+        }
       }
     }
+    
   }
 
   send() {
@@ -133,6 +138,8 @@ export class MessageButtonComponent implements OnChanges {
       }
 
     }
+
+    this.messageDiv.nativeElement.focus()
     
   }
 
@@ -161,5 +168,10 @@ export class MessageButtonComponent implements OnChanges {
       name: option.name,
       value: text
     })
+  }
+
+  focusMessageDiv() {
+    this.messageDiv.nativeElement.focus()
+
   }
 }
