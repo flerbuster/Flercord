@@ -82,6 +82,11 @@ export class FlercordComponent {
     this.initialize()
   }
 
+  clearToken() {
+    this.token = ""
+    FlercordLocalStorage.deleteToken()
+  }
+
   getGuildIconUrl(guild: Guild) {
     const base = "https://cdn.discordapp.com/icons/"
     if (guild?.icon) {

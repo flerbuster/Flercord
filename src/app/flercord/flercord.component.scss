@@ -34,9 +34,11 @@
     }
 }
 
+$login-width: 55rem;
+$login-height: 3rem;
+
 .login {
-    $login-width: 55rem;
-    $login-height: 3rem;
+
 
     height: 100vh;
     width: 100vw;
@@ -72,30 +74,30 @@
             box-shadow: rgba(0, 0, 0, 0.35) 0px 7.5px 20px;
         }
     }
+}
 
-    #input-btn {
-        box-sizing: border-box;
+.input-btn {
+    box-sizing: border-box;
 
-        padding-left: 1rem;
-        width: $login-width;
-        height: $login-height;
-        
-        margin: 1rem;
+    padding-left: 1rem;
+    width: $login-width;
+    height: $login-height;
+    
+    margin: 1rem;
 
-        border: none;
-        outline: none;
+    border: none;
+    outline: none;
 
-        border-radius: 0.75rem;
+    border-radius: 0.75rem;
 
 
 
-        $bg: lighten-or-darken-color($bg-color-dark, 10);
-        background-color: $bg;
-        color: get-text-color($bg);
+    $bg: lighten-or-darken-color($bg-color-dark, 10);
+    background-color: $bg;
+    color: get-text-color($bg);
 
-        &:focus {
-            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-        }
+    &:focus {
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
 }
 

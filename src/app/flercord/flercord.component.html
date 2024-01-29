@@ -2,7 +2,7 @@
 @if (token == null) {
     <div class="login">
         <input id="token-input" type="text" [(ngModel)]="tokeninput" placeholder="Discord Token">
-        <button id="input-btn" (click)="settoken()">Login</button>
+        <button class="input-btn" (click)="settoken()">Login</button>
     </div>
 } @else if(initialized) {
     <div class="toasts">
@@ -38,5 +38,7 @@
         <h1>Loading</h1>
     
         <div class="loader"></div>
+
+        <button class="input-btn" (click)="clearToken()">Logout</button>
     </div>
 }

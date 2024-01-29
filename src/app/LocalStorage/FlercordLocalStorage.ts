@@ -13,6 +13,10 @@ export default class FlercordLocalStorage {
         localStorage.setItem(FlercordLocalStorage.token_key, value);
     }
 
+    static deleteToken() {
+        localStorage.removeItem(FlercordLocalStorage.token_key)
+    }
+
     private static commands_key = "flercord.commands"
 
     static get commands(): Command[] {
