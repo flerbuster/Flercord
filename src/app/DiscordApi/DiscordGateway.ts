@@ -28,7 +28,7 @@ export class DiscordGateway {
     private heartbeatInterval: number = 999999;
     wait = false
   
-    eventListeners: Map<string, Array<(event: any) => void>> = new Map();
+    eventListeners: Map<string, Array<(event: any, op?: number, event_name?: string) => void>> = new Map();
   
     private consolelog(...args: any[]): void {
       if (this.log) console.log(...args);
@@ -94,9 +94,9 @@ export class DiscordGateway {
           event_type,
           event_listeners,
         ] of this.eventListeners.entries()) {
-          if (event_type === eventData.t) {
+          if (event_type === eventData.t || event_type == "") {
             for (let event_listener of event_listeners) {
-              event_listener(eventData.d);
+              event_listener(eventData.d, eventData.op, eventData.t);
             }
           }
         }
@@ -173,7 +173,7 @@ export class DiscordGateway {
       }, this.heartbeatInterval);
     }
   
-    onEvent(event: string, callback: (event: any) => void) {
+    onEvent(event: string, callback: (event: any, op?: number, event_name?: string) => void) {
       let current =
         this.eventListeners.get(event) ?? new Array<(event: any) => void>();
       current.push(callback);

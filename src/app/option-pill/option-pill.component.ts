@@ -12,6 +12,8 @@ export class OptionPillComponent {
   @Input() name: string
   @Input() required: boolean
   @Output() changeText = new EventEmitter<string>()
+  @Output() onFocus = new EventEmitter()
+  
   value: string = ""
 
   changeValue = (text: string) => {

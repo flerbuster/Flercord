@@ -1,0 +1,15 @@
+<div class="commands">
+    @for (command of commands; track command) {
+        <div class="command">
+            <h2 class="command-name">{{command.name}}</h2>
+            <div class="command-creator">
+                <img class="creator-avatar" [src]="getAvatar(command.creator)">
+                <p class="creator-name">{{command.creator.global_name}}</p>
+            </div>
+
+            <p class="command-created">{{getTimeSince(command.creationDate)}}</p>
+
+            <p class="command-response">{{command.response}}</p>
+        </div>
+    }
+</div>

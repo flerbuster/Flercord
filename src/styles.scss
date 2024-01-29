@@ -7,6 +7,11 @@ $text-color-dark: rgb(20, 20, 20);
 $font-one: sans-serif;
 $color-1: #6610f2;
 
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
 @function lighten-or-darken-color($color, $factor) {
     $hue: hue($color);
     $saturation: saturation($color);

@@ -56,6 +56,8 @@ export class MessageButtonComponent implements OnChanges {
 
   filledOptions: FilledOptions = []
 
+  dontFocus = false
+
   ngOnChanges() {
     this.cachedApplications = undefined
     this.applications = []
@@ -93,7 +95,8 @@ export class MessageButtonComponent implements OnChanges {
     if (element.innerText.endsWith("\n") && event.inputType.includes("insert") && event.inputType != "insertLineBreak") {
       this.send()
     } else {
-      this.cmdFilter = (element as HTMLElement).innerText.split("/", 2)[1]
+      this.view_commands = (element as HTMLElement).innerText.trim().startsWith("/")
+      this.cmdFilter = (element as HTMLElement).innerText.trim().split("/", 2)[1]
       this.current_message = element.innerText;
       this.onType(event)
   
@@ -171,7 +174,11 @@ export class MessageButtonComponent implements OnChanges {
   }
 
   focusMessageDiv() {
-    this.messageDiv.nativeElement.focus()
+    if (!this.dontFocus) this.messageDiv.nativeElement.focus()
+    this.dontFocus = false
+  }  
 
+  dontFocusMessageDiv() {
+    this.dontFocus = true
   }
 }

@@ -1,0 +1,19 @@
+<div class="event-logger">
+    <button class="download" (click)="download()">Download Logs</button>
+
+    @for (event of event_log; track event) {
+        @if (event.name == "MESSAGE_CREATE") {
+            <standard-message [message]="event.event" [messages]="[event.event]"></standard-message>
+        } @else {
+            <div class="no-match-event event">
+                <p>{{event.name}}</p>
+                <p [largetext]="toJson(event.event)" [max]="300"></p>
+            </div>
+
+        }
+
+    }
+    
+    <div class="test" #test></div>
+    
+</div>
