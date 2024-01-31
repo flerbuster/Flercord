@@ -1,6 +1,7 @@
 import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
 import { FilledOptions } from "../message-button/message-button.component";
 import { DiscordGateway } from "./DiscordGateway";
+import { builtinCommands } from "./FlercordBuiltinCommands";
 import { Application, ApplicationCommand, ApplicationCommandResponse, CommandInteractionData, Component, DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
 
 export default class DiscordAPI {
@@ -17,7 +18,6 @@ export default class DiscordAPI {
         }
         return result;
     }
-
 
     // Sort DM Channels
     static sortDmChannels(dmChannels: DmChannel[]): DmChannel[] {
@@ -36,7 +36,6 @@ export default class DiscordAPI {
         }
         });
     }
-    
 
     // MESSAGE
     static async getMessages(channel_id: string): Promise<Message[]> {
@@ -85,6 +84,21 @@ export default class DiscordAPI {
         } finally {
           return message_list
         }
+    }
+
+    static async getAllMessagesIn(channel_id: string): Promise<Message[]> {
+      let d = 0
+      let messages: Message[] = await this.getMessages(channel_id)
+      if (messages.length < 50) return messages
+      let new_messages: Message[] = []
+      do {
+        new_messages = await this.getMessagesBefore(messages[0].id, channel_id)
+        messages = new_messages.concat(messages)
+        console.log(messages)
+        d++
+      } while (new_messages.length >= 50)
+
+      return messages
     }
 
     static async sendMessage(channel_id: string, content?: string, tts?: boolean, attachments?: DiscordMessageAttachment[]): Promise<Message> {
@@ -137,7 +151,8 @@ export default class DiscordAPI {
       console.log(body);
   
       return await(await fetch(`${this.base_url}/channels/${channel_id}/messages`, options)).json() as Message;
-  }
+    }
+
     static async deleteMessage(channel_id: string, message_id: string): Promise<void> {
         const options = {
           method: 'DELETE',
@@ -326,6 +341,10 @@ export default class DiscordAPI {
       const response = await fetch("https://discord.com/api/v9/interactions", options);
     }
 
+    static findBuiltinCommand(commandId: string) {
+      return builtinCommands.find((cmd) => cmd.id == commandId)
+    }
+
     static async clickButton(application_id: string, channel_id: string, guild_id: string, message_id: string, component: Component,
       message_flags: number) {
       let session_id = DiscordGateway.getInstance().data.session_id
@@ -411,6 +430,7 @@ export default class DiscordAPI {
 
     // Util
     static userAvatar(user: { avatar?: string, id: string }): string {
+      if (user.avatar?.startsWith("https")) return user.avatar
       let icon_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/310px-Placeholder_view_vector.svg.png"
       if (user.avatar) icon_url =  `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`
       return icon_url

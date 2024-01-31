@@ -3,11 +3,12 @@ import { Command } from '../command/Command';
 import FlercordLocalStorage from '../LocalStorage/FlercordLocalStorage';
 import { Author } from '../DiscordApi/Interface';
 import DiscordAPI from '../DiscordApi/DiscordApi';
+import { DeletableDirective } from '../deletable/Deletable.directive';
 
 @Component({
   selector: 'app-command-ui',
   standalone: true,
-  imports: [],
+  imports: [DeletableDirective],
   templateUrl: './command-ui.component.html',
   styleUrl: './command-ui.component.scss'
 })
@@ -48,5 +49,9 @@ export class CommandUiComponent {
     } else {
         return seconds === 1 ? '1 second ago' : `${seconds} seconds ago`;
     }
-}
+  }
+
+  deleteCommand = (command: Command) =>  {
+    FlercordLocalStorage.deleteCommandByName(command.name)
+  }
 }

@@ -13,7 +13,7 @@
                 <div class="img-container"><img [src]="getAvatarUrl(selectedApplication)"> </div>
                 <h3 class="commandName">{{command.name}}</h3>
                 <p class="commandDescription">{{command.description}}</p>
-                <p class="commandApplicationName">selectedApplication.application.bot.global_name</p>
+                <p class="commandApplicationName">{{selectedApplication.application.bot.username}}</p>
             </div>
 
         }

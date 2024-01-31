@@ -6,6 +6,7 @@ import { DeletableDirective } from '../deletable/Deletable.directive';
 import { GuildApplicationCommandsViewComponent } from '../guild-application-commands-view/guild-application-commands-view.component';
 import { OptionPillComponent } from '../option-pill/option-pill.component';
 import { ToastState } from '../toast-alert/ToastState';
+import { builtinApplication, builtinCommands } from '../DiscordApi/FlercordBuiltinCommands';
 
 export interface ApplicationWithCommands {
   application: Application,
@@ -58,6 +59,7 @@ export class MessageButtonComponent implements OnChanges {
 
   dontFocus = false
 
+
   ngOnChanges() {
     this.cachedApplications = undefined
     this.applications = []
@@ -101,14 +103,32 @@ export class MessageButtonComponent implements OnChanges {
       this.onType(event)
   
       console.log("typed, new inner text: ", element.innerText, ", view commands: ", this.view_commands, "guild id: ", this.guild_id, " filter: ", this.cmdFilter)
-      if (this.view_commands && this.guild_id) {
+      if (this.view_commands) {
         if (this.cachedApplications) {
           this.applications = this.cachedApplications
         } else {
-          DiscordAPI.getApplicationCommands(this.guild_id).then((response) => {
+          let promise = new Promise((resolve, reject) => {
+            if (this.guild_id) {DiscordAPI.getApplicationCommands(this.guild_id).then((response) => {
+              resolve(response)
+            })} else {
+              let response: ApplicationCommandResponse = {
+                application_commands: [],
+                applications: [],
+                version: "1"
+              }
+              resolve(response)
+            }
+    
+          })
+
+          promise.then((response: ApplicationCommandResponse) => {
+            response.application_commands.push(...builtinCommands)
+            response.applications.push(builtinApplication)
+
             this.applications = this.groupApplications(response)
             this.cachedApplications = this.applications
           })
+
         }
       }
     }

@@ -1,6 +1,6 @@
 <div class="commands">
     @for (command of commands; track command) {
-        <div class="command">
+        <div class="command" [deletable]="deleteCommand(command)">
             <h2 class="command-name">{{command.name}}</h2>
             <div class="command-creator">
                 <img class="creator-avatar" [src]="getAvatar(command.creator)">

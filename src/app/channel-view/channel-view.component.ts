@@ -183,10 +183,15 @@ export class ChannelViewComponent {
   }
 
   useCommand(event: { command: CommandSelect, filledOptions: FilledOptions }) {
-    console.log("using command: ", event.command)
-    DiscordAPI.useCommand(this.guild_id, this.channel_id, event.command.command, event.command.application, event.filledOptions).then(() => {
-      console.log("command: ", event.command, " !")
-    })
+    let builtIn = DiscordAPI.findBuiltinCommand(event.command.command.id)
+    if (builtIn == undefined) {
+      console.log("using command: ", event.command)
+      DiscordAPI.useCommand(this.guild_id, this.channel_id, event.command.command, event.command.application, event.filledOptions).then(() => {
+        console.log("command: ", event.command, " !")
+      })
+    } else {
+      builtIn.handleCall(this.channel_id, this.guild_id, event.filledOptions)
+    }
   }
 
   clickComponent(component: Cmp, message: Message) {
