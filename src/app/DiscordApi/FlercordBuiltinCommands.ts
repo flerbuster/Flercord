@@ -33,7 +33,6 @@ export const builtinApplication: Application = {
     description: "builtin flercord commands",
     id: flercordApplicationId,
     name: "builtin"
-
 }
 
 export const builtinCommands: BuiltinCommand[] = [{
@@ -52,21 +51,32 @@ export const builtinCommands: BuiltinCommand[] = [{
       autocomplete: false,
       description_localized: "",
       name_localized: ""
+    }, {
+        type: 2,
+        name: "exclude",
+        description: "exclude user ids",
+        required: false,
+        autocomplete: false,
+        description_localized: "",
+        name_localized: ""
     }],
     handleCall: (channelId: string, guildId?: string, filledOptions?: FilledOptions) => {
         DiscordAPI.getAllMessagesIn(channelId).then((messages) => {
-            let users = [...new Set(messages.map((msg) => msg.author.id))]
+            let excluded = (filledOptions.find((option) => option.name == "exclude")?.value ?? "").split(",")
+            let users = [...new Set(messages.map((msg) => msg.author.id))].filter((user) => !excluded.includes(user))
             let multiple = filledOptions.find((option) => option.name == "multiple" && option.value == "true")
 
-            if (multiple) {
-                chunk(users, 15).forEach((usersBatch) => {
-                    DiscordAPI.sendMessage(channelId, `${usersBatch.map((user) => `<@${user}>`).join(", ")}`)
-                })
-            } else {
-                users.forEach((user) => {
-                    DiscordAPI.sendMessage(channelId, `<@${user}>`)
-                })
-            }
+            setInterval(() => {
+                if (multiple) {
+                    chunk(users, 15).forEach((usersBatch) => {
+                        DiscordAPI.sendMessage(channelId, `${usersBatch.map((user) => `<@${user}>`).join(", ")}`)
+                    })
+                } else {
+                    users.forEach((user) => {
+                        DiscordAPI.sendMessage(channelId, `<@${user}>`)
+                    })
+                }
+            }, 3000)
         })
 
     }
