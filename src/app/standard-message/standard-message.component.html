@@ -32,7 +32,7 @@
                     <p class="timestamp">{{ getFormattedTimestamp(message.timestamp) }}</p>
                 </div>
             }
-            <p class="message">{{ message.content }}</p>
+            <p class="message">{{ message.content | unflercode }}</p>
     
             @if (message.embeds.length > 0) {
                 <div class="embeds">

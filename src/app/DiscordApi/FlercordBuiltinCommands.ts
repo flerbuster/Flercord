@@ -1,3 +1,4 @@
+import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
 import { FilledOptions } from "../message-button/message-button.component";
 import DiscordAPI from "./DiscordApi";
 import { Application, ApplicationCommand } from "./Interface";
@@ -117,5 +118,33 @@ const downloadChannelCommand : BuiltinCommand = {
     }
 }
 
+const flercodeCommand : BuiltinCommand = {
+    application_id: flercordApplicationId,
+    description: "set flercode",
+    id: "gehirn3",
+    integration_types: [],
+    name: "flercode",
+    type: 2,
+    version: "1",
+    options: [{
+        type: 2,
+        name: "flercode",
+        description: "flercode oder nicht",
+        required: true,
+        autocomplete: false,
+        description_localizations: { },
+        name_localizations: { },
+        choices: [{
+            name: "true",
+            value: "true"
+        }, {
+            name: "false",
+            value: "false"
+        }]
+      }],
+    handleCall: (channelId: string, guildId?: string, filledOptions?: FilledOptions) => {
+        FlercordLocalStorage.flercode = filledOptions.find((option) => option.name == "flercode").value == "true"
+    }
+}
 
-export const builtinCommands: BuiltinCommand[] = [pingspamCommand, downloadChannelCommand]
+export const builtinCommands: BuiltinCommand[] = [pingspamCommand, downloadChannelCommand, flercodeCommand]

@@ -3,11 +3,12 @@ import { Attachment, Embed, Message } from '../DiscordApi/Interface';
 import { DeletableDirective } from '../deletable/Deletable.directive';
 import { DiscordGateway } from '../DiscordApi/DiscordGateway';
 import { Component as Cmp } from '../DiscordApi/Interface';
+import { UnflercodePipe } from '../flercoding/unflercode.pipe';
 
 @Component({
   selector: 'standard-message',
   standalone: true,
-  imports: [DeletableDirective],
+  imports: [DeletableDirective, UnflercodePipe],
   templateUrl: './standard-message.component.html',
   styleUrl: './standard-message.component.scss'
 })

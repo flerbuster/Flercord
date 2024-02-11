@@ -36,4 +36,14 @@ export default class FlercordLocalStorage {
     static deleteCommandByName(name: string) {
         this.commands = this.commands.filter((cmd) => cmd.name != name)
     }
+
+    private static flercode_key = "flercord.flercode"
+
+    static get flercode(): boolean {
+        return localStorage.getItem(this.flercode_key) == "true"
+    }
+
+    static set flercode(value: boolean) {
+        localStorage.setItem(this.flercode_key, value.toString())
+    }
 }

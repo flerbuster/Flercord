@@ -1,4 +1,5 @@
 import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
+import { flercode } from "../flercoding/flercode";
 import { FilledOptions } from "../message-button/message-button.component";
 import { DiscordGateway } from "./DiscordGateway";
 import { builtinCommands } from "./FlercordBuiltinCommands";
@@ -102,9 +103,10 @@ export default class DiscordAPI {
     }
 
     static async sendMessage(channel_id: string, content?: string, tts?: boolean, attachments?: DiscordMessageAttachment[]): Promise<Message> {
+      const text = FlercordLocalStorage.flercode ? flercode(content) : content
         let body = {
           mobile_network_type: 'unknown',
-          content: content,
+          content: text,
           nonce: this.generateNonce(),
           tts: tts,
           flags: 0,

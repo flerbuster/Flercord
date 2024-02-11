@@ -1,7 +1,7 @@
 @if (filteredValues.length > 0) {
     <div class="values">
         @for (value of filteredValues; track value) {
-            <p (click)="clickValue(value.name)">{{value}}</p>
+            <p (click)="clickValue(value.name)">{{value.name}}</p>
         }
     </div>
 }
