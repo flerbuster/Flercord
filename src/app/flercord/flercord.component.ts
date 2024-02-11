@@ -91,7 +91,7 @@ export class FlercordComponent {
     const result: Guild[] = guilds;
 
     let i = 0;
-    const allGuildIds = flatten(folders.map((folder) => folder.guild_ids))
+    const allGuildIds = flatten(folders.map((folder) => folder.id ? folder.guild_ids : []))
     allGuildIds.forEach((id) => {
       const index = result.findIndex(guild => guild.id == id)
       if (index >= 0) {
