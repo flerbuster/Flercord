@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApplicationWithCommands, CommandSelect } from '../message-button/message-button.component';
 import DiscordAPI from '../DiscordApi/DiscordApi';
 import { ApplicationCommand, Application } from '../DiscordApi/Interface';
+import { flatten } from '../DiscordApi/FlercordBuiltinCommands';
 
 @Component({
   selector: 'app-guild-application-commands-view',
@@ -22,7 +23,7 @@ export class GuildApplicationCommandsViewComponent {
     return DiscordAPI.userAvatar(app.application.bot)
   }
 
-  getCommands(app: ApplicationWithCommands | undefined) {
+  getCommands(app: ApplicationWithCommands | undefined): ApplicationCommand[] {
     return app?.commands?.filter((cmd) => {
       return cmd.name.toLowerCase().includes(this.filter) ||  (cmd.description ?? "").toLowerCase().includes(this.filter)
     }) ?? []

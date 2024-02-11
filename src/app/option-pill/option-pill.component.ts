@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ApplicationCommandOptionChoice } from '../DiscordApi/Interface';
 
 @Component({
   selector: 'app-option-pill',
@@ -11,12 +12,27 @@ import { FormsModule } from '@angular/forms';
 export class OptionPillComponent {
   @Input() name: string
   @Input() required: boolean
-  @Output() changeText = new EventEmitter<string>()
+  @Input() possibleValues: ApplicationCommandOptionChoice[] = []
+  @Output() changeText = new EventEmitter<any>()
   @Output() onFocus = new EventEmitter()
+
+  filteredValues: ApplicationCommandOptionChoice[] = this.possibleValues
+
+  filter: string = ""
   
   value: string = ""
 
+  clickValue = (text: string) => {
+    this.value = text
+    this.filter = ""
+  }
+
   changeValue = (text: string) => {
-    this.changeText.emit(text)
+    if (this.possibleValues.length == 0) {
+      this.changeText.emit(text)
+    } else {
+      this.filter = text
+      this.filteredValues = this.possibleValues.filter((it) => it.name.includes(text))
+    }
   }
 }

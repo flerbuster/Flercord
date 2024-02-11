@@ -97,5 +97,6 @@ export class FlercordComponent {
 
   selectGuild(guild: Guild) {
     this.open_guild = guild
+    this.open_channel = undefined
   }
 }

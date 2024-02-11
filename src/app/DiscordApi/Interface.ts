@@ -598,16 +598,41 @@ export interface ReadyEvent {
     _trace: string[]
 }
 
-export interface Option {
-  type: number,
-  name: string,
-  description: string,
-  required: boolean,
-  autocomplete: boolean,
-  description_localized: string,
-  name_localized: string
+export interface ApplicationCommandOptionChoice {
+  name: string;
+  value: string | number;
 }
 
+export interface Option {
+  type: ApplicationCommandOptionType;
+  name: string;
+  name_localizations?: { [locale: string]: string };
+  description: string;
+  description_localizations?: { [locale: string]: string };
+  required?: boolean;
+  choices?: ApplicationCommandOptionChoice[];
+  options?: Option[];
+  channel_types?: number[]; // Assuming channel types are represented by numbers
+  min_value?: number;
+  max_value?: number;
+  min_length?: number;
+  max_length?: number;
+  autocomplete?: boolean;
+}
+
+enum ApplicationCommandOptionType {
+  SUB_COMMAND = 1,
+  SUB_COMMAND_GROUP = 2,
+  STRING = 3,
+  INTEGER = 4,
+  BOOLEAN = 5,
+  USER = 6,
+  CHANNEL = 7,
+  ROLE = 8,
+  MENTIONABLE = 9,
+  NUMBER = 10,
+  ATTACHMENT = 11
+}
 export interface ApplicationCommand {
   application_id: string,
   description: string | undefined,

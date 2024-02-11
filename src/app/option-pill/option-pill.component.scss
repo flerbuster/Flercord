@@ -43,3 +43,22 @@ $pill-outline-color-required: rgba(223, 130, 130, 0.7);
         }
     }
 }
+
+.values {
+    position: absolute;
+    bottom: 2.5rem;
+    z-index: 5;
+    overflow: visible;
+
+    p {
+        border-radius: 0.5rem;
+        background-color: rgba(35, 25, 25, 0.75);
+        margin: 0.15rem;
+        padding: 0.5rem;
+        z-index: 5;
+        
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

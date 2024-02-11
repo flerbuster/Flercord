@@ -1,3 +1,10 @@
+@if (filteredValues.length > 0) {
+    <div class="values">
+        @for (value of filteredValues; track value) {
+            <p (click)="clickValue(value.name)">{{value}}</p>
+        }
+    </div>
+}
 <div class="option-pill option-pill-{{required}}" (click)="onFocus.emit()">
     <p class="name">{{name}}</p>
     <input class="value" [(ngModel)]="value" (ngModelChange)="changeValue($event)">

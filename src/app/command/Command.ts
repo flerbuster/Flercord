@@ -1,10 +1,12 @@
 import DiscordAPI from "../DiscordApi/DiscordApi";
-import { DiscordGateway } from "../DiscordApi/DiscordGateway";
+import { DiscordGateway, EventCallback } from "../DiscordApi/DiscordGateway";
 import { Author, Message, PublicUser } from '../DiscordApi/Interface';
 import FlercordLocalStorage from "../LocalStorage/FlercordLocalStorage";
 import { ToastState } from "../toast-alert/ToastState";
 
 export class Command {
+    static eventListeners: EventCallback[] = []
+
     constructor(public name: string, public response: string, public creator: Author, public creationDate: Date, public args: { name: string, value: string }[] ) {
         
     }
@@ -157,8 +159,13 @@ export class Command {
     }
 
     static initializeCommandEventListener() {
-        DiscordGateway.getInstance().onEvent("MESSAGE_CREATE", (event: Message) => {
+        for (let listener of this.eventListeners) {
+            DiscordGateway.getInstance().destroyListener(listener.id)
+        }
 
+        this.eventListeners = []
+
+        this.eventListeners.push(DiscordGateway.getInstance().onEvent("MESSAGE_CREATE", (event: Message) => {
             let cmd = Command.createCommandByString(event.content, event.author)
             if (cmd && cmd.name != "gehirnbuster") {
                 if (FlercordLocalStorage.commands.find((cd) => cd.name == cmd.name)) {
@@ -213,7 +220,7 @@ export class Command {
 
 
 
-        })
+        }))
     }
 
 }

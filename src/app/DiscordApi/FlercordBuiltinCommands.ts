@@ -8,6 +8,10 @@ export interface BuiltinCommand extends ApplicationCommand {
 
 const flercordApplicationId = "1"
 
+export function flatten<T>(arr: T[][]): T[] {
+    return ([] as T[]).concat(...arr);
+}
+
 export function chunk<T>(array: T[], n: number): T[][] {
     const result: T[][] = []
 
@@ -17,6 +21,20 @@ export function chunk<T>(array: T[], n: number): T[][] {
 
     return result
 }
+
+export function downloadFile(content: string): void {
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'event-log.txt';
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  }
 
 export const builtinApplication: Application = {
     bot: {
@@ -35,7 +53,7 @@ export const builtinApplication: Application = {
     name: "builtin"
 }
 
-export const builtinCommands: BuiltinCommand[] = [{
+const pingspamCommand : BuiltinCommand = {
     application_id: flercordApplicationId,
     description: "ping spams channel",
     id: "gehirn",
@@ -49,16 +67,16 @@ export const builtinCommands: BuiltinCommand[] = [{
       description: "ping multiple users at once",
       required: false,
       autocomplete: false,
-      description_localized: "",
-      name_localized: ""
+      description_localizations: { },
+      name_localizations: { }
     }, {
         type: 2,
         name: "exclude",
         description: "exclude user ids",
         required: false,
         autocomplete: false,
-        description_localized: "",
-        name_localized: ""
+        description_localizations: { },
+        name_localizations: { }
     }],
     handleCall: (channelId: string, guildId?: string, filledOptions?: FilledOptions) => {
         DiscordAPI.getAllMessagesIn(channelId).then((messages) => {
@@ -80,4 +98,24 @@ export const builtinCommands: BuiltinCommand[] = [{
         })
 
     }
-  }]
+}
+
+const downloadChannelCommand : BuiltinCommand = {
+    application_id: flercordApplicationId,
+    description: "download channel",
+    id: "gehirn2",
+    integration_types: [],
+    name: "downloadchannel",
+    type: 2,
+    version: "1",
+    options: [],
+    handleCall: (channelId: string, guildId?: string, filledOptions?: FilledOptions) => {
+        DiscordAPI.getAllMessagesIn(channelId).then((messages) => {
+            console.log("all messages: ", messages)
+            downloadFile(JSON.stringify(messages))
+        })
+    }
+}
+
+
+export const builtinCommands: BuiltinCommand[] = [pingspamCommand, downloadChannelCommand]

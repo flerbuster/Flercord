@@ -3,7 +3,7 @@ import { StandardMessageComponent } from '../standard-message/standard-message.c
 import DiscordAPI from '../DiscordApi/DiscordApi';
 import { Message, Recipient } from '../DiscordApi/Interface';
 import { CommandSelect, FilledOptions, MessageButtonComponent } from '../message-button/message-button.component';
-import { DiscordGateway } from '../DiscordApi/DiscordGateway';
+import { DiscordGateway, EventCallback } from '../DiscordApi/DiscordGateway';
 import { ToastState } from '../toast-alert/ToastState';
 import { Component as Cmp } from '../DiscordApi/Interface';
 
@@ -37,11 +37,25 @@ export class ChannelViewComponent {
 
   atTop = false
 
+  eventListeners: EventCallback[] = []
+
+  intervals: ReturnType<typeof setInterval>[] = []
+
   ngOnInit() {
 
   }
 
   async ngOnChanges() {
+    for (let listener of this.eventListeners) {
+      DiscordGateway.getInstance().destroyListener(listener.id)
+    }
+    this.eventListeners = []
+
+    for (let interval of this.intervals) {
+      clearInterval(interval)
+    }
+    this.intervals = []
+
     this.replyTo = undefined
     this.changed = true
     this.atTop = false
@@ -51,11 +65,11 @@ export class ChannelViewComponent {
       this.messages = await DiscordAPI.getMessages(this.channel_id)
     }
 
-    setTimeout(() => {
+    this.intervals.push(setTimeout(() => {
       this.scrollToBottom()
-    }, 100)
+    }, 100))
 
-    DiscordGateway.getInstance().onEvent("MESSAGE_CREATE", (message: Message) => {
+    this.eventListeners.push(DiscordGateway.getInstance().onEvent("MESSAGE_CREATE", (message: Message) => {
       if (message.channel_id == this.channel_id) {
         if (!this.messages.find((msg) => msg.id == message.id)) {
           this.messages.push(message)
@@ -65,9 +79,9 @@ export class ChannelViewComponent {
           }, 200)
         }
       }
-    })
+    }))
 
-    DiscordGateway.getInstance().onEvent("MESSAGE_UPDATE", (message: Message) => {
+    this.eventListeners.push(DiscordGateway.getInstance().onEvent("MESSAGE_UPDATE", (message: Message) => {
       let index = this.messages.findIndex((msg) => msg.id == message.id)
       if (index >= 0) {
         if (message.embeds) this.messages[index].embeds = message.embeds
@@ -75,9 +89,9 @@ export class ChannelViewComponent {
         this.messages[index].content = message.content
         this.messages[index].edited_timestamp = new Date().toString()
       }
-    })
+    }))
 
-    setInterval(() => {
+    this.intervals.push(setInterval(() => {
       if (this.isAtTop() && !this.fetching && this.messages.length > 0 && this.channel_id && !this.changed && !this.atTop) {
         this.fetching = true
         let current = [...this.messages]
@@ -107,7 +121,7 @@ export class ChannelViewComponent {
         });
       
       }
-    }, 250)
+    }, 250))
   }
 
   
@@ -197,5 +211,13 @@ export class ChannelViewComponent {
   clickComponent(component: Cmp, message: Message) {
     DiscordAPI.clickButton(message.application_id ?? "", message.channel_id, this.guild_id, message.id, component,
       message.flags)
+  }
+
+  ngOnDestroy(): void {
+    for (let listener of this.eventListeners) {
+      DiscordGateway.getInstance().destroyListener(listener.id)
+    }
+
+    this.eventListeners = []
   }
 }

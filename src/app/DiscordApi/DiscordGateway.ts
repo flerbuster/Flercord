@@ -18,6 +18,11 @@ enum ClientActionOpCode {
     HeartbeatACK = 11,
 }
 
+export type EventCallback = {
+  callback: (event: any, op?: number, event_name?: string) => void;
+  id: number
+}
+
 export class DiscordGateway {
     private static instance: DiscordGateway | null = null;
     private log = true;
@@ -28,7 +33,7 @@ export class DiscordGateway {
     private heartbeatInterval: number = 999999;
     wait = false
   
-    eventListeners: Map<string, Array<(event: any, op?: number, event_name?: string) => void>> = new Map();
+    eventListeners: Map<string, Array<EventCallback>> = new Map();
   
     private consolelog(...args: any[]): void {
       if (this.log) console.log(...args);
@@ -96,7 +101,7 @@ export class DiscordGateway {
         ] of this.eventListeners.entries()) {
           if (event_type === eventData.t || event_type == "") {
             for (let event_listener of event_listeners) {
-              event_listener(eventData.d, eventData.op, eventData.t);
+              event_listener.callback(eventData.d, eventData.op, eventData.t);
             }
           }
         }
@@ -173,11 +178,28 @@ export class DiscordGateway {
       }, this.heartbeatInterval);
     }
   
-    onEvent(event: string, callback: (event: any, op?: number, event_name?: string) => void) {
+    onEvent(event: string, callback: (event: any, op?: number, event_name?: string) => void): EventCallback {
+      let cbck: EventCallback = {
+        callback,
+        id: Math.random()
+      }
       let current =
-        this.eventListeners.get(event) ?? new Array<(event: any) => void>();
-      current.push(callback);
+        this.eventListeners.get(event) ?? new Array<EventCallback>();
+      current.push(cbck);
       this.eventListeners.set(event, current);
+
+      return cbck
     }
-  }
+
+    destroyListener(id: number) {
+      for (let [
+        _,
+        event_listeners,
+      ] of this.eventListeners.entries()) {
+        let idx = event_listeners.findIndex((it) => it.id == id)
+        if (idx >= 0) {event_listeners.splice(idx, 1); console.log("destroying id: ", id, " index: ", idx)}
+      }
+      
+    }
+}
   
