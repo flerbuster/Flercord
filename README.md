@@ -11,3 +11,6 @@ git clone und dann in /src/app/DiscordApi/DiscordApi.ts auth zu deinem token än
 
 
 das ist mittlerweile bisschen anders
+
+
+use /flercoding true to (undecodeably) de and encode messages
