@@ -116,18 +116,6 @@ $login-height: 3rem;
     max-height: 100vh;
     overflow-y: auto;
     @include flercord-scrollbar;
-    
-    img {
-        $img-size: 3.5rem;
-        width: $img-size;
-        height: $img-size;
-        border-radius: 50%;
-        margin-top: 1rem;
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
 }
 
 .guild-channel-selector {

@@ -1,0 +1,10 @@
+img {
+  $img-size: 3.5rem;
+  width: $img-size;
+  height: $img-size;
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

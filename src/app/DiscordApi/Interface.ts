@@ -511,9 +511,9 @@ export interface ChannelOverride {
 }
 
 export interface GuildFolder {
-    color?: string,
+    color?: number,
     guild_ids: string[],
-    id?: string,
+    id?: number,
     name?: string
 }
 
@@ -539,7 +539,7 @@ export interface UserSettings {
     friend_discovery_flags: number,
     friend_source_flags: { all: boolean }[],
     gif_auto_play: boolean,
-    guild_folders: GuildFolder,
+    guild_folders: GuildFolder[],
     inline_attachment_media: boolean,
     inline_embed_media: boolean,
     locale: string,
