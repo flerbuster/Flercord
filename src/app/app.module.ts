@@ -11,11 +11,13 @@ import { AlertModule } from '@coreui/angular';
 import { RouterModule, Routes } from '@angular/router';
 import { CommandUiComponent } from './command-ui/command-ui.component';
 import { EventLoggerComponent } from './event-logger/event-logger.component';
+import { LoginComponent } from './login/login.component';
 
 const appRoutes: Routes = [
   { path: "", component: FlercordComponent },
   { path: "command-ui", component: CommandUiComponent },
-  { path: "event-logger", component: EventLoggerComponent }
+  { path: "event-logger", component: EventLoggerComponent },
+  { path: "login", component: LoginComponent }
 ]
 
 @NgModule({
@@ -23,7 +25,6 @@ const appRoutes: Routes = [
     AppComponent
   ],
   imports: [
-    AppRoutingModule,
     FormsModule,
     BrowserModule,
     FormsModule,

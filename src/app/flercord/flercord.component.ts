@@ -21,6 +21,7 @@ import { ToastState } from '../toast-alert/ToastState';
 import { GuildFolderComponent } from '../guild-folder/guild-folder.component';
 import { GuildIconComponent } from '../guild-icon/guild-icon.component';
 import { flatten } from '../DiscordApi/FlercordBuiltinCommands';
+import { RouterModule } from '@angular/router';
 
 export interface Folder {
   guilds: Guild[];
@@ -39,6 +40,7 @@ export interface Folder {
     ToastAlertComponent,
     GuildFolderComponent,
     GuildIconComponent,
+    RouterModule
   ],
   templateUrl: './flercord.component.html',
   styleUrl: './flercord.component.scss',

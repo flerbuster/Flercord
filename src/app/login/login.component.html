@@ -1,0 +1,32 @@
+@if (error != null) {
+    <app-error-dialog [error]="error" (dismiss)="error = null"></app-error-dialog>
+}
+
+<div class="auth">
+    @if (loading) {
+        <app-loading-spinner></app-loading-spinner>
+    } 
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+        <div class="email">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" ngModel email required #email="ngModel">
+            @if (email.invalid && email.touched) {
+                <p class="help-invalid">Please enter a valid email</p>
+            }
+        </div>
+
+        <div class="password">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" ngModel minlength="6" required #password="ngModel">
+            @if (password.invalid && password.touched) {
+                <p class="help-invalid">Please enter a valid password</p>
+            }
+        </div>
+
+        <div class="button-row">
+            <button class="submit" type="submit" [disabled]="form.invalid" [ngClass]="{'disabled': form.invalid}">
+                Login
+            </button>
+        </div>
+    </form>
+</div>

@@ -3,7 +3,7 @@ import { flercode } from "../flercoding/flercode";
 import { FilledOptions } from "../message-button/message-button.component";
 import { DiscordGateway } from "./DiscordGateway";
 import { builtinCommands } from "./FlercordBuiltinCommands";
-import { Application, ApplicationCommand, ApplicationCommandResponse, CommandInteractionData, Component, DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, Message } from "./Interface";
+import { Application, ApplicationCommand, ApplicationCommandResponse, CommandInteractionData, Component, DetailedGuildInfo, DiscordAttachment, DiscordFile, DiscordMessageAttachment, DmChannel, Guild, GuildChannel, LoginResponse, Message } from "./Interface";
 
 export default class DiscordAPI {
     private constructor() { };
@@ -427,6 +427,28 @@ export default class DiscordAPI {
         }
 
         // TODO: mit browser funktionieren, überhaupt funtionieren
+    }
+
+
+    // Login
+    static async login(login: string, password: string): Promise<LoginResponse> {
+      const body = {
+        login,
+        password,
+        undelete: false
+      }
+
+      const response = await fetch("https://discord.com/api/v9/auth/login", {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { 
+          'Content-Type': "application/json" 
+        }
+      })
+
+      const json = await response.json()
+
+      return json
     }
 
 

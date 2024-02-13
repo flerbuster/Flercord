@@ -1,0 +1,8 @@
+<div class="wrapper" (click)="dismiss.emit()">
+    <div class="dialog">
+        <p class="message">{{error}}</p>
+        <div class="alert-box-actions">
+            <button class="dismiss" (click)="dismiss.emit()">Dismiss error</button>
+        </div>
+    </div>
+</div>

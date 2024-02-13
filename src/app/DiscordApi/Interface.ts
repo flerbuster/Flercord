@@ -517,6 +517,15 @@ export interface GuildFolder {
     name?: string
 }
 
+export interface LoginResponse {
+  user_id: string,
+  token: string,
+  user_settings: {
+    locale: string,
+    theme: "dark" | "light"
+  }
+}
+
 export interface UserSettings {
     activity_joining_restricted_guild_ids: any[],
     activity_restricted_guild_ids: any[],
